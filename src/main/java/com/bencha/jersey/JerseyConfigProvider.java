@@ -4,6 +4,8 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import com.coreoz.plume.admin.jersey.feature.AdminSecurityFeature;
+import com.coreoz.plume.admin.jersey.feature.RestrictToAdmin;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import com.coreoz.plume.jersey.errors.WsJacksonJsonProvider;
@@ -25,19 +27,24 @@ public class JerseyConfigProvider implements Provider<ResourceConfig> {
 	public JerseyConfigProvider(ObjectMapper objectMapper) {
 		config = new ResourceConfig();
 
-		// this package will be scanned by Jersey to discover web-service classes
+        // require explicit access control on API
+        config.register(RequireExplicitAccessControlFeature.accessControlAnnotations(PublicApi.class, RestrictToAdmin.class));
+
+        // this package will be scanned by Jersey to discover web-service classes
 		config.packages("com.bencha.webservices");
+
+        config.packages("com.coreoz.plume.admin.webservices");
 
 		// filters configuration
 		// handle errors and exceptions
 		config.register(WsResultExceptionMapper.class);
-		// require explicit access control on API
-		config.register(RequireExplicitAccessControlFeature.accessControlAnnotations(PublicApi.class));
 		// to debug web-service requests
 		// register(LoggingFeature.class);
 
 		// java 8
 		config.register(TimeParamProvider.class);
+
+        config.register(AdminSecurityFeature.class);
 
 		// WADL is like swagger for jersey
 		// by default it should be disabled to prevent leaking API documentation

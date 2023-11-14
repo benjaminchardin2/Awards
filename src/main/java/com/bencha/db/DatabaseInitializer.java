@@ -1,5 +1,7 @@
 package com.bencha.db;
 
+import org.flywaydb.core.Flyway;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.sql.DataSource;
@@ -18,7 +20,6 @@ public class DatabaseInitializer {
 	}
 
 	public void setup() {
-        /*
 		Flyway
 			.configure()
 			.dataSource(dataSource)
@@ -27,6 +28,5 @@ public class DatabaseInitializer {
             // use repair() when working locally on a migration file
             // => this enables Flyway to accept the changes made in the migration file
 			.migrate();
-         */
 	}
 }

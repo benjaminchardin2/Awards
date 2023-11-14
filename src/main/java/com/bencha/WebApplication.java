@@ -3,6 +3,7 @@ package com.bencha;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+import com.bencha.db.DatabaseInitializer;
 import org.glassfish.grizzly.GrizzlyFuture;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -36,7 +37,7 @@ public class WebApplication {
 			ResourceConfig jerseyResourceConfig = injector.getInstance(ResourceConfig.class);
 
 			// Initialize database
-			// injector.getInstance(DatabaseInitializer.class).setup();
+			injector.getInstance(DatabaseInitializer.class).setup();
 
 			// Enable Jersey to create objects through Guice Injector instance
 			jerseyResourceConfig.register(new JerseyGuiceFeature(injector));

@@ -1,3 +1,4 @@
+import dayjs, { Dayjs } from 'dayjs';
 import { Translations } from './Translations';
 
 const frMessages: Translations = {
@@ -38,6 +39,14 @@ const frMessages: Translations = {
   // home
   home: {
     title: 'Page d\'accueil',
+    pronostic: 'Voir la cérémonie',
+    in: (date: Dayjs) => {
+      const diff: number = date.diff(dayjs(), 'days');
+      if (diff > 0) {
+        return `Dans ${diff} jours`;
+      }
+      return 'Aujourd\'hui';
+    },
   },
   login: {
     title: 'Se connecter',

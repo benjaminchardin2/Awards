@@ -4,14 +4,12 @@ import frMessages from '../translations/fr';
 import { Locale } from '../../lib/locale-resolver/LocaleResolver';
 import { Translations } from '../translations/Translations';
 import LocaleService from '../locale/LocaleService';
-import enMessages from '../translations/en';
 
 export default class MessageService {
   private messages: WritableObservable<Translations>;
 
   private static translations: Map<Locale, Translations> = new Map<Locale, Translations>([
     [LocaleService.LOCALE_FR, frMessages],
-    [LocaleService.LOCALE_EN, enMessages],
   ]);
 
   constructor(localeService: LocaleService) {

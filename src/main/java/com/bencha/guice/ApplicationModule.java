@@ -1,5 +1,8 @@
 package com.bencha.guice;
 
+import com.coreoz.plume.admin.guice.GuiceAdminWsWithDefaultsModule;
+import com.coreoz.plume.db.guice.DataSourceModule;
+import com.coreoz.plume.db.querydsl.guice.GuiceQuerydslModule;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import com.bencha.jersey.JerseyConfigProvider;
@@ -18,9 +21,10 @@ public class ApplicationModule extends AbstractModule {
 		install(new GuiceConfModule());
 		install(new GuiceJacksonWithMetricsModule());
 		// Database & Querydsl installation
-		// install(new GuiceQuerydslModule());
+        install(new GuiceQuerydslModule());
         // Data source exposure for Flyway
-        // install(new DataSourceModule());
+        install(new DataSourceModule());
+        install(new GuiceAdminWsWithDefaultsModule());
 
 		// Prepare Jersey configuration
 		bind(ResourceConfig.class).toProvider(JerseyConfigProvider.class);

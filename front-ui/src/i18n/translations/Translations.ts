@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs';
+
 export interface ErrorFunction {
   (...args: string[]): string,
 }
@@ -39,6 +41,8 @@ export type Translations = {
   // home
   home: {
     title: string,
+    pronostic: string,
+    in: (date: Dayjs) => string,
   },
   login: {
     title: string,

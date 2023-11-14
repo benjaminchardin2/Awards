@@ -1,0 +1,72 @@
+@use "../variables" as *;
+
+.home {
+  .highlight-row {
+    display: flex;
+    flex-direction: row;
+    gap: $spacer-8;
+    .highlight {
+      width: 100%;
+      &.MuiCard-root {
+        display: flex;
+        flex-direction: column;
+
+        .MuiCardHeader-root {
+          position: relative;
+
+          .MuiCardHeader-content {
+            display: flex;
+            flex-direction: row;
+          }
+
+          .MuiCardHeader-title {
+            font-size: $font-size-extra-large;
+            font-weight: bold;
+          }
+
+          .MuiAvatar-root {
+            height: 60px;
+            width: 60px;
+          }
+
+          .MuiChip-root {
+            position: absolute;
+            top: 0;
+            right: 0;
+            align-self: flex-end;
+            border-radius: 0;
+            background-color: $black;
+            font-size: $font-size-normal;
+            color: white;
+          }
+        }
+
+        .MuiCardContent-root {
+          display: flex;
+          flex-direction: row;
+          flex-grow: 1;
+          padding-bottom: $spacer-3;
+
+          .highlight-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            .MuiLink-root {
+              color: $black;
+              font-weight: bold;
+            }
+          }
+
+          .highlight-right {
+            .MuiCardMedia-img {
+              flex-grow: 1;
+              max-width: 350px;
+              object-fit: contain;
+            }
+          }
+        }
+      }
+    }
+  }
+}

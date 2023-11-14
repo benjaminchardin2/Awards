@@ -109,20 +109,20 @@
 			<optional>true</optional>
 		</dependency>
 		<!-- PUT YOUR DATABASE CONNECTOR HERE -->
-		 <!--<dependency>
-		 	<groupId>org.mariadb.jdbc</groupId>
-		 	<artifactId>mariadb-java-client</artifactId>
-		 	<version>3.2.0</version>
-		 </dependency>-->
+		 <dependency>
+		 	<groupId>com.mysql</groupId>
+		 	<artifactId>mysql-connector-j</artifactId>
+		 	<version>8.1.0</version>
+		 </dependency>
         <!-- Uncomment to use flyway -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
-        </dependency>-->
+        </dependency>
 
 		<!-- jersey -->
 		<dependency>
@@ -184,7 +184,15 @@
         <dependency>
             <groupId>com.coreoz</groupId>
             <artifactId>plume-services</artifactId>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.coreoz</groupId>
+            <artifactId>plume-admin-ws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.holgerbrandl</groupId>
+            <artifactId>themoviedbapi</artifactId>
+            <version>1.12</version>
         </dependency>
 	</dependencies>
 
