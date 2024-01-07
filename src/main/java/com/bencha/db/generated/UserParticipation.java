@@ -1,8 +1,9 @@
 package com.bencha.db.generated;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import javax.annotation.processing.Generated;
 import com.querydsl.sql.Column;
+
+import javax.annotation.processing.Generated;
 
 /**
  * UserParticipation is a Querydsl bean type
@@ -10,16 +11,16 @@ import com.querydsl.sql.Column;
 @Generated("com.coreoz.plume.db.querydsl.generation.IdBeanSerializer")
 public class UserParticipation extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
 
-    @Column("ceremony_id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("ceremony_id")
     private Long ceremonyId;
 
-    @Column("id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("id")
     private Long id;
 
-    @Column("user_id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("user_id")
     private Long userId;
 
     public Long getCeremonyId() {

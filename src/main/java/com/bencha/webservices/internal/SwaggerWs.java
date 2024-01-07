@@ -1,7 +1,14 @@
 package com.bencha.webservices.internal;
 
-import java.util.List;
-import java.util.Set;
+import com.coreoz.plume.jersey.security.basic.BasicAuthenticator;
+import com.coreoz.plume.jersey.security.permission.PublicApi;
+import io.swagger.v3.core.util.Yaml;
+import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
+import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import io.swagger.v3.oas.integration.api.OpenApiContext;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.servers.Server;
+import lombok.SneakyThrows;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -11,18 +18,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
-import com.coreoz.plume.jersey.security.basic.BasicAuthenticator;
-import com.coreoz.plume.jersey.security.permission.PublicApi;
-
-import io.swagger.v3.core.util.Yaml;
-import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
-import io.swagger.v3.oas.integration.SwaggerConfiguration;
-import io.swagger.v3.oas.integration.api.OpenApiContext;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.servers.Server;
-
-import lombok.SneakyThrows;
+import java.util.List;
+import java.util.Set;
 
 @Path("/swagger")
 @Singleton

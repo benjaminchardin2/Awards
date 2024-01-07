@@ -1,8 +1,9 @@
 package com.bencha.db.generated;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import javax.annotation.processing.Generated;
 import com.querydsl.sql.Column;
+
+import javax.annotation.processing.Generated;
 
 /**
  * Role is a Querydsl bean type

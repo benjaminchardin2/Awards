@@ -6,39 +6,26 @@ import {
   ActionContainerProps,
   ActionLinkProps,
 } from '../../../lib/plume-admin-theme/action/ActionProps';
-import ActionStyle from '../../../lib/plume-admin-theme/action/ActionStyle';
-
-function actionStyleToCssClass(
-  actionStyle?: ActionStyle,
-): 'inherit' | 'primary' | 'secondary' | 'error' {
-  if (!actionStyle) {
-    return 'inherit';
-  }
-  if (actionStyle === ActionStyle.DANGER) {
-    return 'error';
-  }
-  return actionStyle;
-}
 
 export function ActionsContainer({
   children,
-  cssClasses,
+  actionStyle,
 }: ActionContainerProps) {
   return (
-    <div className={`actions ${cssClasses ?? ''}`}>
+    <div className={`actions ${actionStyle ?? ''}`}>
       {children}
     </div>
   );
 }
 
 export function ActionLink({
-  style, icon, linkTo, children,
+  actionStyle, icon, linkTo, children,
 }: ActionLinkProps) {
   return (
     <Button
-      className={`action-container ${actionStyleToCssClass(style)}`}
+      className={`action-container ${actionStyle}`}
       variant="contained"
-      color={actionStyleToCssClass(style)}
+      color={actionStyle}
       component={Link}
       to={linkTo}
       startIcon={icon && <Icon>{icon}</Icon>}
@@ -49,7 +36,7 @@ export function ActionLink({
 }
 
 export function ActionButton({
-  style,
+  actionStyle,
   icon,
   cssClasses,
   onClick,
@@ -67,7 +54,7 @@ export function ActionButton({
         type={onClick ? 'button' : 'submit'}
         variant="contained"
         disabled={isLoading}
-        color={actionStyleToCssClass(style)}
+        color={actionStyle}
         startIcon={icon && <Icon>{icon}</Icon>}
       >
         {children}

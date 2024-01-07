@@ -1,6 +1,13 @@
 package com.bencha.webservices.internal;
 
-import java.util.Map;
+import com.codahale.metrics.Metric;
+import com.coreoz.plume.jersey.monitoring.utils.health.HealthCheckBuilder;
+import com.coreoz.plume.jersey.monitoring.utils.health.beans.HealthStatus;
+import com.coreoz.plume.jersey.monitoring.utils.info.ApplicationInfoProvider;
+import com.coreoz.plume.jersey.monitoring.utils.info.beans.ApplicationInfo;
+import com.coreoz.plume.jersey.monitoring.utils.metrics.MetricsCheckBuilder;
+import com.coreoz.plume.jersey.security.basic.BasicAuthenticator;
+import com.coreoz.plume.jersey.security.permission.PublicApi;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -11,16 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
-import com.codahale.metrics.Metric;
-import com.coreoz.plume.jersey.monitoring.utils.health.HealthCheckBuilder;
-import com.coreoz.plume.jersey.monitoring.utils.health.beans.HealthStatus;
-import com.coreoz.plume.jersey.monitoring.utils.info.ApplicationInfoProvider;
-
-import com.coreoz.plume.jersey.monitoring.utils.info.beans.ApplicationInfo;
-import com.coreoz.plume.jersey.monitoring.utils.metrics.MetricsCheckBuilder;
-import com.coreoz.plume.jersey.security.basic.BasicAuthenticator;
-import com.coreoz.plume.jersey.security.permission.PublicApi;
+import java.util.Map;
 
 @Path("/monitoring")
 // Authentication is done directly by the web service without any annotation

@@ -1,6 +1,4 @@
-import {
-  MutableRefObject, useEffect, useRef,
-} from 'react';
+import { MutableRefObject, useEffect, useRef } from 'react';
 
 /**
  * Enable to control the timeout in the component where it is used.
@@ -34,7 +32,7 @@ type TimeoutType = ReturnType<typeof setTimeout>;
  * This hook is a typed and commented version of
  * https://github.com/WebDevSimplified/useful-custom-react-hooks/blob/main/src/2-useTimeout/useTimeout.js
  */
-export default function useTimeout(callback: () => void, delayInMillis: number) {
+export default function useTimeout(callback: () => void, delayInMillis: number, disableOnFirstRender?: boolean) {
   // it's important to have a React ref here: it enables to keep a reference to the last version of the callback
   const callbackRef: MutableRefObject<() => void> = useRef(callback);
   const timeoutIdRef: MutableRefObject<TimeoutType | undefined> = useRef<TimeoutType>();
@@ -54,7 +52,9 @@ export default function useTimeout(callback: () => void, delayInMillis: number) 
   };
 
   useEffect(() => {
-    startTimeout();
+    if (!disableOnFirstRender) {
+      startTimeout();
+    }
     return stopTimeout;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

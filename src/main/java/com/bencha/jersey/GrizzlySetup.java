@@ -1,17 +1,15 @@
 package com.bencha.jersey;
 
-import java.io.IOException;
-import java.net.URI;
-
-import javax.ws.rs.core.UriBuilder;
-
+import com.coreoz.plume.jersey.grizzly.GrizzlyErrorPageHandler;
 import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import com.coreoz.plume.jersey.grizzly.GrizzlyErrorPageHandler;
+import javax.ws.rs.core.UriBuilder;
+import java.io.IOException;
+import java.net.URI;
 
 /**
  * Configure and start a Grizzly server

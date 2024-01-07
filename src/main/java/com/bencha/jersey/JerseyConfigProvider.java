@@ -1,19 +1,19 @@
 package com.bencha.jersey;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
 import com.coreoz.plume.admin.jersey.feature.AdminSecurityFeature;
 import com.coreoz.plume.admin.jersey.feature.RestrictToAdmin;
-import org.glassfish.jersey.server.ResourceConfig;
-
+import com.coreoz.plume.admin.webservices.SessionWs;
 import com.coreoz.plume.jersey.errors.WsJacksonJsonProvider;
 import com.coreoz.plume.jersey.errors.WsResultExceptionMapper;
 import com.coreoz.plume.jersey.java8.TimeParamProvider;
 import com.coreoz.plume.jersey.security.permission.PublicApi;
 import com.coreoz.plume.jersey.security.permission.RequireExplicitAccessControlFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.glassfish.jersey.server.ResourceConfig;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
 /**
  * Jersey configuration
@@ -33,7 +33,7 @@ public class JerseyConfigProvider implements Provider<ResourceConfig> {
         // this package will be scanned by Jersey to discover web-service classes
 		config.packages("com.bencha.webservices");
 
-        config.packages("com.coreoz.plume.admin.webservices");
+        config.registerClasses(SessionWs.class);
 
 		// filters configuration
 		// handle errors and exceptions

@@ -13,7 +13,7 @@ export function formErrorToMessage(
   if (error.type === 'required') {
     return messageResolver('error.field.required');
   }
-  return `Unhandled error: ${error.type} - ${error.message}`;
+  return `${error.message}`;
 }
 
 export function makeErrorMessageMapping(message: string, type: string = 'validate') {

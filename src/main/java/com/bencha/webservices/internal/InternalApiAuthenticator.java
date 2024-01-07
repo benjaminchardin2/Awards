@@ -1,11 +1,10 @@
 package com.bencha.webservices.internal;
 
+import com.bencha.services.configuration.ConfigurationService;
+import com.coreoz.plume.jersey.security.basic.BasicAuthenticator;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import com.bencha.services.configuration.ConfigurationService;
-
-import com.coreoz.plume.jersey.security.basic.BasicAuthenticator;
 
 @Singleton
 public class InternalApiAuthenticator {

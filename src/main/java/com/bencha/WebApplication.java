@@ -1,23 +1,21 @@
 package com.bencha;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
 import com.bencha.db.DatabaseInitializer;
-import org.glassfish.grizzly.GrizzlyFuture;
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.server.ResourceConfig;
-
 import com.bencha.guice.ApplicationModule;
 import com.bencha.jersey.GrizzlySetup;
 import com.bencha.services.configuration.ConfigurationService;
-
+import com.bencha.services.scheduler.ScheduledJobs;
 import com.coreoz.plume.jersey.guice.JerseyGuiceFeature;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
-
 import lombok.extern.slf4j.Slf4j;
+import org.glassfish.grizzly.GrizzlyFuture;
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.server.ResourceConfig;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The application entry point, where it all begins.
@@ -38,6 +36,9 @@ public class WebApplication {
 
 			// Initialize database
 			injector.getInstance(DatabaseInitializer.class).setup();
+
+            // Start scheduled jobs
+            injector.getInstance(ScheduledJobs.class).scheduleJobs();
 
 			// Enable Jersey to create objects through Guice Injector instance
 			jerseyResourceConfig.register(new JerseyGuiceFeature(injector));

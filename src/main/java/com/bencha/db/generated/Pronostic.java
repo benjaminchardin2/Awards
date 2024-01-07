@@ -1,8 +1,9 @@
 package com.bencha.db.generated;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import javax.annotation.processing.Generated;
 import com.querydsl.sql.Column;
+
+import javax.annotation.processing.Generated;
 
 /**
  * Pronostic is a Querydsl bean type
@@ -10,24 +11,24 @@ import com.querydsl.sql.Column;
 @Generated("com.coreoz.plume.db.querydsl.generation.IdBeanSerializer")
 public class Pronostic extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
 
-    @Column("award_id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("award_id")
     private Long awardId;
 
-    @Column("id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("id")
     private Long id;
 
-    @Column("tdmb_movie_id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("tdmb_movie_id")
     private Long tdmbMovieId;
 
-    @Column("tdmb_person_id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("tdmb_person_id")
     private Long tdmbPersonId;
 
-    @Column("user_participation_id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("user_participation_id")
     private Long userParticipationId;
 
     public Long getAwardId() {

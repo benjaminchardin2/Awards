@@ -1,14 +1,13 @@
-import ActionStyle from './ActionStyle';
-import { IconType } from '../../../components/theme/IconType';
+import { ReactNode } from 'react';
 
 export type ActionContainerProps = {
-  cssClasses?: string,
+  actionStyle?: 'inherit' | 'primary' | 'secondary' | 'error',
   children?: React.ReactNode,
 };
 
 export type ActionProps = {
-  style?: ActionStyle,
-  icon?: IconType,
+  actionStyle?: 'inherit' | 'primary' | 'secondary' | 'error',
+  icon?: ReactNode,
   cssClasses?: string,
   children?: React.ReactNode,
 };

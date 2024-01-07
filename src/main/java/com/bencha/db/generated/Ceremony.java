@@ -1,8 +1,9 @@
 package com.bencha.db.generated;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import javax.annotation.processing.Generated;
 import com.querydsl.sql.Column;
+
+import javax.annotation.processing.Generated;
 
 /**
  * Ceremony is a Querydsl bean type
@@ -22,8 +23,8 @@ public class Ceremony extends com.coreoz.plume.db.querydsl.crud.CrudEntityQueryd
     @Column("has_nominees")
     private Boolean hasNominees;
 
-    @Column("id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("id")
     private Long id;
 
     @Column("is_highlighted")

@@ -1,6 +1,6 @@
 import { HttpMethod } from 'simple-http-request-builder';
-import { RefreshableJwtToken } from 'browser-user-session';
 import type { SessionRefresher } from 'browser-user-session';
+import { RefreshableJwtToken } from 'browser-user-session';
 import ApiHttpClient from '../ApiHttpClient';
 
 export type SessionCredentials = {
@@ -15,7 +15,7 @@ export default class SessionApi implements SessionRefresher {
   authenticate(credentials: SessionCredentials) {
     return this
       .httpClient
-      .restRequest<RefreshableJwtToken>(HttpMethod.POST, '/admin/session')
+      .restRequest<RefreshableJwtToken>(HttpMethod.POST, '/login')
       .jsonBody(credentials)
       .execute();
   }

@@ -146,6 +146,15 @@
 			<scope>provided</scope>
 		</dependency>
 
+        <dependency>
+            <groupId>com.coreoz</groupId>
+            <artifactId>plume-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.coreoz</groupId>
+            <artifactId>plume-scheduler</artifactId>
+        </dependency>
+
 		<!-- swagger -->
 		<dependency>
 			<groupId>io.swagger.core.v3</groupId>
