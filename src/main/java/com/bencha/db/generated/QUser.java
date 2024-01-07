@@ -1,17 +1,18 @@
 package com.bencha.db.generated;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
-
-import com.querydsl.core.types.dsl.*;
-
-import com.querydsl.core.types.PathMetadata;
-import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-
-import java.util.*;
-
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.sql.ColumnMetadata;
+
+import javax.annotation.processing.Generated;
 import java.sql.Types;
+import java.util.Arrays;
+
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 
 
@@ -40,7 +41,11 @@ public class QUser extends com.querydsl.sql.RelationalPathBase<User> {
 
     public final StringPath password = createString("password");
 
+    public final BooleanPath rgpdOk = createBoolean("rgpdOk");
+
     public final StringPath userName = createString("userName");
+
+    public final BooleanPath validated = createBoolean("validated");
 
     public final com.querydsl.sql.PrimaryKey<User> primary = createPrimaryKey(id);
 
@@ -76,12 +81,14 @@ public class QUser extends com.querydsl.sql.RelationalPathBase<User> {
     public void addMetadata() {
         addMetadata(creationDate, ColumnMetadata.named("creation_date").withIndex(3).ofType(Types.TIMESTAMP).withSize(19).notNull());
         addMetadata(email, ColumnMetadata.named("email").withIndex(6).ofType(Types.VARCHAR).withSize(255).notNull());
-        addMetadata(firstName, ColumnMetadata.named("first_name").withIndex(4).ofType(Types.VARCHAR).withSize(255).notNull());
+        addMetadata(firstName, ColumnMetadata.named("first_name").withIndex(4).ofType(Types.VARCHAR).withSize(255));
         addMetadata(id, ColumnMetadata.named("id").withIndex(1).ofType(Types.BIGINT).withSize(19).notNull());
         addMetadata(idRole, ColumnMetadata.named("id_role").withIndex(2).ofType(Types.BIGINT).withSize(19).notNull());
-        addMetadata(lastName, ColumnMetadata.named("last_name").withIndex(5).ofType(Types.VARCHAR).withSize(255).notNull());
+        addMetadata(lastName, ColumnMetadata.named("last_name").withIndex(5).ofType(Types.VARCHAR).withSize(255));
         addMetadata(password, ColumnMetadata.named("password").withIndex(8).ofType(Types.VARCHAR).withSize(255).notNull());
+        addMetadata(rgpdOk, ColumnMetadata.named("rgpd_ok").withIndex(10).ofType(Types.BIT).withSize(1).notNull());
         addMetadata(userName, ColumnMetadata.named("user_name").withIndex(7).ofType(Types.VARCHAR).withSize(255).notNull());
+        addMetadata(validated, ColumnMetadata.named("validated").withIndex(9).ofType(Types.BIT).withSize(1).notNull());
     }
 
 }

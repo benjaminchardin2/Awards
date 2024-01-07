@@ -1,8 +1,9 @@
 package com.bencha.db.generated;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import javax.annotation.processing.Generated;
 import com.querydsl.sql.Column;
+
+import javax.annotation.processing.Generated;
 
 /**
  * User is a Querydsl bean type
@@ -33,8 +34,14 @@ public class User extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
     @Column("password")
     private String password;
 
+    @Column("rgpd_ok")
+    private Boolean rgpdOk;
+
     @Column("user_name")
     private String userName;
+
+    @Column("validated")
+    private Boolean validated;
 
     public java.time.Instant getCreationDate() {
         return creationDate;
@@ -92,12 +99,28 @@ public class User extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
         this.password = password;
     }
 
+    public Boolean getRgpdOk() {
+        return rgpdOk;
+    }
+
+    public void setRgpdOk(Boolean rgpdOk) {
+        this.rgpdOk = rgpdOk;
+    }
+
     public String getUserName() {
         return userName;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Boolean getValidated() {
+        return validated;
+    }
+
+    public void setValidated(Boolean validated) {
+        this.validated = validated;
     }
 
     @Override

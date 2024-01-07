@@ -1,9 +1,5 @@
 package com.bencha.db;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.Locale;
-
 import com.coreoz.plume.conf.guice.GuiceConfModule;
 import com.coreoz.plume.db.querydsl.generation.IdBeanSerializer;
 import com.coreoz.plume.db.transaction.TransactionManager;
@@ -14,14 +10,13 @@ import com.querydsl.sql.Configuration;
 import com.querydsl.sql.SQLTemplates;
 import com.querydsl.sql.codegen.DefaultNamingStrategy;
 import com.querydsl.sql.codegen.MetaDataExporter;
-import com.querydsl.sql.types.JSR310InstantType;
-import com.querydsl.sql.types.JSR310LocalDateType;
-import com.querydsl.sql.types.JSR310LocalTimeType;
-import com.querydsl.sql.types.JSR310ZonedDateTimeType;
-import com.querydsl.sql.types.Type;
-
+import com.querydsl.sql.types.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.Locale;
 
 /**
  * Generate Querydsl classes for the database layer.

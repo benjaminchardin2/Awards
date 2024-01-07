@@ -1,4 +1,4 @@
-import {HttpMethod} from 'simple-http-request-builder';
+import { HttpMethod } from 'simple-http-request-builder';
 import ApiHttpClient from '../ApiHttpClient';
 
 export type Ceremony = {

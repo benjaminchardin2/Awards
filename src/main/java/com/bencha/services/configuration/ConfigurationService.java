@@ -1,9 +1,9 @@
 package com.bencha.services.configuration;
 
+import com.typesafe.config.Config;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import com.typesafe.config.Config;
 
 @Singleton
 public class ConfigurationService {
@@ -31,5 +31,26 @@ public class ConfigurationService {
             return null;
         }
         return config.getInt("http-grizzly.worker-threads-pool-size");
+    }
+
+    public String getVerificationLinkHtmlPath() {
+        return config.getString("verification-link.html.path");
+    }
+
+    public String getResetPasswordHtmlPath() {
+        return config.getString("reset-password.html.path");
+    }
+
+    public String getResetPasswordWebPath() {
+        return config.getString("reset-password.web.path");
+    }
+
+
+    public String getWebUrl() {
+        return config.getString("web.url");
+    }
+
+    public String getVerificationLinkWebPath() {
+        return config.getString("verification-link.web.path");
     }
 }

@@ -37,3 +37,16 @@ p {
 .description {
   white-space: pre-line;
 }
+
+.page-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  .main-layout {
+    margin-left: $spacer-5;
+    margin-right: $spacer-5;
+    margin-top: $spacer-7;
+    flex-grow: 1;
+  }
+}

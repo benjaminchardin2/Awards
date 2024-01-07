@@ -70,3 +70,49 @@
     }
   }
 }
+
+@media screen and (max-width: 1200px) {
+  .home {
+    .highlight-row {
+      flex-direction: column;
+
+      .highlight {
+        &.MuiCard-root {
+          .MuiCardHeader-root {
+            flex-direction: column;
+            width: 100%;
+            padding: 8px 8px 4px;
+
+            .MuiCardHeader-content {
+              width: 100%;
+              flex-direction: column-reverse;
+            }
+
+            .MuiChip-root {
+              font-size: $font-size-little;
+
+              .MuiChip-label {
+                padding-left: 4px;
+                padding-right: 4px;
+              }
+            }
+
+            .MuiCardHeader-title {
+              font-size: $font-size-large;
+            }
+          }
+
+          .MuiCardContent-root {
+            padding: 4px 8px 8px;
+          }
+
+          .MuiCardMedia-img {
+            flex-grow: 1;
+            max-height: 100px;
+            object-fit: contain;
+          }
+        }
+      }
+    }
+  }
+}

@@ -29,6 +29,7 @@
       color: $primary-color;
       font-size: $font-size-large;
       text-align: center;
+      margin-bottom: $spacer-1;
     }
 
     .login-box {
@@ -38,6 +39,7 @@
       border-radius: 4px;
       border: 1px solid #ddd;
       text-align: center;
+      position: relative;
 
       a {
         display: inline-block;
@@ -52,11 +54,18 @@
           justify-content: center;
 
           .action-container {
+            margin-bottom: $spacer-3;
+
             & > button {
               display: flex;
               margin: 0 auto;
             }
           }
+        }
+
+        .login-confirmation {
+          font-size: small;
+          margin-bottom: $spacer-2;
         }
       }
 
@@ -75,6 +84,30 @@
             background-color: white;
           }
         }
+      }
+
+      .login-link {
+        color: $black;
+        a {
+          color: inherit;
+          text-decoration: inherit;
+        }
+
+        font-size: smaller;
+      }
+
+      .reset-link {
+        color: $black;
+        a {
+          color: inherit;
+          text-decoration: inherit;
+        }
+
+        font-size: smaller;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        margin: $spacer-2;
       }
     }
   }

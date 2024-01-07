@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { getGlobalInstance } from 'plume-ts-di';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Avatar, Button, CardActions, CardHeader, CardMedia, Chip, Link } from '@mui/material';
-import { Panel } from '../theme/layout/Panel';
+import {
+  Avatar, CardActions, CardHeader, CardMedia, Chip, Link,
+} from '@mui/material';
+import dayjs from 'dayjs';
 import useMessages from '../../i18n/hooks/messagesHook';
 import CeremonyApi, { Ceremony } from '../../api/ceremony/CeremonyApi';
 import useLoader, { LoaderState } from '../../lib/plume-http-react-hook-loader/promiseLoaderHook';
 import { useOnComponentMounted } from '../../lib/react-hooks-alias/ReactHooksAlias';
-import dayjs from "dayjs";
+import useIsMobile from '../../services/hooks/useIsMobile';
 
 export default function Home() {
   const { messages } = useMessages();
@@ -16,6 +18,7 @@ export default function Home() {
 
   const loader: LoaderState = useLoader();
   const [ceremonies, setCeremonies] = useState<Ceremony[] | undefined>(undefined);
+  const isMobile: boolean = useIsMobile();
 
   useOnComponentMounted(() => {
     loader.monitor(
@@ -29,7 +32,6 @@ export default function Home() {
 
   return (
     <div className="home">
-    <Panel>
       {ceremonies
         ? <div className="highlight-row">
         {ceremonies
@@ -37,13 +39,19 @@ export default function Home() {
           <Card key={ceremony.id} className="highlight">
               <CardHeader
                 avatar={
-                  <Avatar alt={`award-icon-${ceremony.shortName}`} src={ceremony.avatarUrl} />
+                  isMobile ? undefined : <Avatar alt={`award-icon-${ceremony.shortName}`} src={ceremony.avatarUrl} />
                 }
                 title={ceremony.name}
                 subheader={
                 <>
+                  {isMobile && <CardMedia
+                    component="img"
+                    alt={ceremony.shortName}
+                    image={ceremony.pictureUrl}
+                  />}
                   {(dayjs(ceremony.ceremonyDate).diff(dayjs()) >= 0)
                     && <Chip
+                      size={isMobile ? 'small' : 'medium'}
                       label={messages.home.in(dayjs(ceremony.ceremonyDate))}
                     />
                   }
@@ -60,20 +68,18 @@ export default function Home() {
                 </Link>
               </CardActions>
               </div>
-              <div className="highlight-right">
-
+              {!isMobile && <div className="highlight-right">
                 <CardMedia
                   component="img"
                   alt={ceremony.shortName}
                   image={ceremony.pictureUrl}
                 />
-              </div>
+              </div>}
             </CardContent>
           </Card>
           ))}
       </div> : <></>
       }
-    </Panel>
     </div>
   );
 }

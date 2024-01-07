@@ -1,8 +1,9 @@
 package com.bencha.db.generated;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import javax.annotation.processing.Generated;
 import com.querydsl.sql.Column;
+
+import javax.annotation.processing.Generated;
 
 /**
  * AwardCondition is a Querydsl bean type
@@ -10,8 +11,8 @@ import com.querydsl.sql.Column;
 @Generated("com.coreoz.plume.db.querydsl.generation.IdBeanSerializer")
 public class AwardCondition extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
 
-    @Column("award_id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("award_id")
     private Long awardId;
 
     @Column("condition_name")
@@ -20,8 +21,8 @@ public class AwardCondition extends com.coreoz.plume.db.querydsl.crud.CrudEntity
     @Column("condition_type")
     private String conditionType;
 
-    @Column("id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("id")
     private Long id;
 
     @Column("value")

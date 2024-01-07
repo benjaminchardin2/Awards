@@ -57,4 +57,6 @@ export type FormFieldProps = {
    * The field content children nodes
    */
   children?: React.ReactNode,
+
+  displayError?: boolean,
 };

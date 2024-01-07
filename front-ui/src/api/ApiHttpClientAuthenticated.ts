@@ -1,10 +1,9 @@
-import { HttpRequest, HttpMethod } from 'simple-http-request-builder';
+import { HttpMethod, HttpRequest } from 'simple-http-request-builder';
 import { HttpPromise } from 'simple-http-rest-client';
 import SessionService from '../services/session/SessionService';
 import ApiHttpClient from './ApiHttpClient';
-import PlumeAdminHttpClient from '../lib/plume-admin-api/PlumeHttpClient';
 
-export default class ApiHttpClientAuthenticated implements PlumeAdminHttpClient {
+export default class ApiHttpClientAuthenticated {
   constructor(private readonly httpClient: ApiHttpClient,
     private readonly sessionService: SessionService) {
   }

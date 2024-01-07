@@ -1,29 +1,36 @@
 import React from 'react';
-import {
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
-import { getGlobalInstance } from 'plume-ts-di';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import ChangePassword from '../features/ChangePassword';
 import Home from '../features/Home';
-import Users from '../../lib/plume-admin-users/pages/Users';
-import PermissionRoute from '../theme/routes/PermissionRoute';
-import Permission from '../../services/session/Permission';
-import { HOME, USERS } from '../Routes';
+import Legal from '../features/Legal';
+import Login from '../features/Login';
+import Register from '../features/Register';
+import ResetPassword from '../features/ResetPassword';
+import VerifyEmail from '../features/VerifyEmail';
+import {
+  CHANGE_PASSWORD, HOME, LOGIN, MENTIONS_LEGALES, REGISTER, RESET_PASSWORD, RGPD, VERIFY_EMAIL,
+} from '../Routes';
+import Footer from './Footer';
+import Header from './Header';
 
 export default function Router() {
-  const users: Users = getGlobalInstance(Users);
-
   return (
-    <Routes>
-      <Route
-        path={`${USERS}/*`}
-        element={
-          <PermissionRoute permission={Permission.MANAGE_USERS}><users.render /></PermissionRoute>
-      }
-      />
-      <Route path={HOME} element={<Home />} />
-      <Route path="*" element={<Navigate to={{ pathname: HOME }} />} />
-    </Routes>
+    <div className="page-layout">
+      <Header />
+      <div className="main-layout">
+        <Routes>
+          <Route path={REGISTER} element={<Register />} />
+          <Route path={LOGIN} element={<Login />} />
+          <Route path={HOME} element={<Home />} />
+          <Route path={MENTIONS_LEGALES} element={<Legal page='mentions-legales' />} />
+          <Route path={RGPD} element={<Legal page='rgpd' />} />
+          <Route path={VERIFY_EMAIL} element={<VerifyEmail />} />
+          <Route path={CHANGE_PASSWORD} element={<ChangePassword />} />
+          <Route path={RESET_PASSWORD} element={<ResetPassword />} />
+          <Route path="*" element={<Navigate to={{ pathname: HOME }} />} />
+        </Routes>
+      </div>
+      <Footer />
+    </div>
   );
 }
