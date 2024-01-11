@@ -51,7 +51,19 @@
         .actions {
           padding: 0;
           display: flex;
+          flex-direction: column;
           justify-content: center;
+          align-items: center;
+
+          .recaptcha-error {
+            font-size: small;
+            color: $error-color;
+            margin-bottom: $spacer-2;
+          }
+
+          .recaptcha-container {
+            margin-bottom: $spacer-2;
+          }
 
           .action-container {
             margin-bottom: $spacer-3;
@@ -61,10 +73,30 @@
               margin: 0 auto;
             }
           }
+
+          .google-login {
+            display: flex;
+            justify-content: center;
+          }
+
+          .MuiButton-root {
+            width: 240px;
+            height: 32px;
+          }
         }
 
         .login-confirmation {
           font-size: small;
+          margin-bottom: $spacer-2;
+        }
+      }
+
+      .alternative-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: $spacer-6;
+        .google-login {
           margin-bottom: $spacer-2;
         }
       }

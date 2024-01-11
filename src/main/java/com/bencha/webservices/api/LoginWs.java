@@ -1,8 +1,12 @@
 package com.bencha.webservices.api;
 
+import com.bencha.db.generated.User;
+import com.bencha.services.GoogleService;
 import com.bencha.services.LoginService;
+import com.bencha.services.RegistrationService;
 import com.bencha.webservices.beans.AuthenticatedSimpleUser;
 import com.bencha.webservices.beans.LoginCredentials;
+import com.bencha.webservices.errors.ProjectWsErrors;
 import com.coreoz.plume.admin.security.login.LoginFailAttemptsManager;
 import com.coreoz.plume.admin.services.configuration.AdminConfigurationService;
 import com.coreoz.plume.admin.services.configuration.AdminSecurityConfigurationService;
@@ -16,6 +20,7 @@ import com.coreoz.plume.jersey.errors.Validators;
 import com.coreoz.plume.jersey.errors.WsException;
 import com.coreoz.plume.jersey.security.permission.PublicApi;
 import com.coreoz.plume.services.time.TimeProvider;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.BaseEncoding;
 import com.google.common.net.HttpHeaders;
@@ -23,6 +28,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,6 +40,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import java.security.SecureRandom;
+import java.util.Optional;
 
 @Path("/login")
 @Tag(name = "login", description = "Login an user")
@@ -41,6 +48,7 @@ import java.security.SecureRandom;
 @Produces(MediaType.APPLICATION_JSON)
 @PublicApi
 @Singleton
+@Slf4j
 public class LoginWs {
 
     public static final FingerprintWithHash NULL_FINGERPRINT = new FingerprintWithHash(null, null);
@@ -59,12 +67,16 @@ public class LoginWs {
     private final SecureRandom fingerprintGenerator;
     private final boolean sessionUseFingerprintCookie;
     private final boolean sessionFingerprintCookieHttpsOnly;
+    private final GoogleService googleService;
+    private final RegistrationService registrationService;
 
     @Inject
     public LoginWs(LoginService loginService,
                    JwtSessionSigner jwtSessionSigner,
                    AdminConfigurationService configurationService,
                    AdminSecurityConfigurationService adminSecurityConfigurationService,
+                   GoogleService googleService,
+                   RegistrationService registrationService,
                    TimeProvider timeProvider) {
         this.loginService = loginService;
         this.jwtSessionSigner = jwtSessionSigner;
@@ -82,6 +94,8 @@ public class LoginWs {
         this.fingerprintGenerator = new SecureRandom();
         this.sessionUseFingerprintCookie = adminSecurityConfigurationService.sessionUseFingerprintCookie();
         this.sessionFingerprintCookieHttpsOnly = adminSecurityConfigurationService.sessionFingerprintCookieHttpsOnly();
+        this.googleService = googleService;
+        this.registrationService = registrationService;
     }
 
     @POST
@@ -163,4 +177,27 @@ public class LoginWs {
         private final String hash;
     }
 
+    @POST
+    @Path("/google")
+    @Operation(description = "Authenticate a user and create a session token using google credentials")
+    public Response authenticateWithGoogle(String googleCredentials) {
+        GoogleIdToken googleIdToken = googleService.authenticateUserUsingGoogleCredentials(googleCredentials);
+        if (googleIdToken == null) {
+            throw new WsException(ProjectWsErrors.CANNOT_AUTHENTICATE_THROUGH_GOOGLE);
+        }
+        // first user needs to be authenticated (an exception will be raised otherwise)
+        Optional<User> optUser = googleService.findUserByGoogleSub(googleIdToken.getPayload().getSubject());
+        User user;
+        user = optUser.orElseGet(() -> registrationService.registerUserWithGoogleIdToken(googleIdToken.getPayload()));
+        AuthenticatedSimpleUser authenticatedUser = AuthenticatedSimpleUser.of(
+            user,
+            loginService.findUserPermissions(user.getIdRole())
+        );
+        // if the client is authenticated, the fingerprint can be generated if needed
+        FingerprintWithHash fingerprintWithHash = sessionUseFingerprintCookie ? generateFingerprint() : NULL_FINGERPRINT;
+        return withFingerprintCookie(
+            Response.ok(toAdminSession(toWebSession(authenticatedUser, fingerprintWithHash.getHash()))),
+            fingerprintWithHash.getFingerprint()
+        ).build();
+    }
 }

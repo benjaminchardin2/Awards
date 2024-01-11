@@ -7,6 +7,7 @@ import Router from './layout/Router';
 import GlobalErrorBoundary from './layout/GlobalErrorBoundary';
 import { useOnComponentMounted } from '../lib/react-hooks-alias/ReactHooksAlias';
 import LegalService from '../services/legal/LegalService';
+import GoogleService from '../services/session/GoogleService';
 
 const logger: Logger = new Logger('App');
 const basePath: string = '/';
@@ -18,9 +19,11 @@ if (window && !window.location.pathname.startsWith(basePath)) {
 
 export default function App() {
   const legalService: LegalService = getGlobalInstance(LegalService);
+  const googleService: GoogleService = getGlobalInstance(GoogleService);
 
   useOnComponentMounted(() => {
     legalService.loadLegalPages();
+    googleService.loadGoogleClient();
   });
 
   logger.info('Render App');

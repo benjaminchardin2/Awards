@@ -49,8 +49,17 @@ public class ConfigurationService {
     public String getWebUrl() {
         return config.getString("web.url");
     }
+    public String getWebHost() {
+        return config.getString("web.host");
+    }
 
     public String getVerificationLinkWebPath() {
         return config.getString("verification-link.web.path");
     }
+
+    public String getGoogleClientId() { return config.getString("google.client.id"); }
+
+    public String getGoogleReCaptchaPublicKey() { return config.getString("google.recaptcha.public"); }
+    public String getGoogleReCaptchaPrivateKey() { return config.getString("google.recaptcha.private"); }
+    public String getGoogleReCaptchaVerificationBaseUrl() { return config.getString("google.recaptcha.verify.url"); }
 }

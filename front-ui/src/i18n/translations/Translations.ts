@@ -113,5 +113,10 @@ export type Translations = {
     ACCOUNT_NOT_VALIDATED: string,
     VERIFICATION_UNKNOWN: string,
     PASSWORD_MODIFICATION_UNKNOWN: string,
+    CANNOT_AUTHENTICATE_THROUGH_GOOGLE: string,
+    RECAPTCHA_ERROR: string,
+  },
+  google: {
+    recaptcha: string,
   },
 };

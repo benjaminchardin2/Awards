@@ -6,18 +6,21 @@ import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import { FormContainer } from 'react-hook-form-mui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import useMessages from '../../i18n/hooks/messagesHook';
-import useLoader, { LoaderState } from '../../lib/plume-http-react-hook-loader/promiseLoaderHook';
-import { useOnDependenciesChange } from '../../lib/react-hooks-alias/ReactHooksAlias';
-import { SessionCredentials } from '../../api/session/SessionApi';
-import SessionService from '../../services/session/SessionService';
-import { HOME, REGISTER, RESET_PASSWORD } from '../Routes';
-import FormField from '../theme/form/FormField';
-import InputText from '../theme/form/fields/InputText';
-import { ActionButton, ActionsContainer } from '../theme/action/Actions';
+import useMessages from '../../../i18n/hooks/messagesHook';
+import useLoader, { LoaderState } from '../../../lib/plume-http-react-hook-loader/promiseLoaderHook';
+import { useOnDependenciesChange } from '../../../lib/react-hooks-alias/ReactHooksAlias';
+import { SessionCredentials } from '../../../api/session/SessionApi';
+import SessionService from '../../../services/session/SessionService';
+import { HOME, REGISTER, RESET_PASSWORD } from '../../Routes';
+import FormField from '../../theme/form/FormField';
+import InputText from '../../theme/form/fields/InputText';
+import { ActionButton, ActionsContainer } from '../../theme/action/Actions';
+import GoogleLogin from './GoogleLogin';
+import GoogleService from '../../../services/session/GoogleService';
 
 export default function Login() {
   const sessionService: SessionService = getGlobalInstance(SessionService);
+  const googleService: GoogleService = getGlobalInstance(GoogleService);
   const { messages, httpError } = useMessages();
   const navigate: NavigateFunction = useNavigate();
 
@@ -34,6 +37,7 @@ export default function Login() {
   };
 
   const isAuthenticated: boolean = useObservable(sessionService.isAuthenticated());
+  const isGoogleInError: boolean = useObservable(googleService.getIsInError());
   useOnDependenciesChange(() => {
     if (isAuthenticated) {
       navigate({ pathname: HOME });
@@ -78,8 +82,12 @@ export default function Login() {
               <ActionButton isLoading={loader.isLoading} actionStyle="primary">
                 {messages.action.authenticate}
               </ActionButton>
+              {!isGoogleInError && <GoogleLogin/>}
             </ActionsContainer>
-            <Link className="login-link" to={REGISTER}>{messages.register.title}</Link>
+
+            <div className="alternative-actions">
+              <Link className="login-link" to={REGISTER}>{messages.register.title}</Link>
+            </div>
             <Link className="reset-link" to={RESET_PASSWORD}>{messages.register.password_forgotten}</Link>
           </FormContainer>
         </div>
