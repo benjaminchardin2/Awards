@@ -78,6 +78,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': ['error', {
       'functions': false,
     }],
+    '@typescript-eslint/no-throw-literal': 0,
     // Uniformize TS type members delimiter (comma instead of semicolon)
     "@typescript-eslint/member-delimiter-style": ["error", {
       "multiline": {

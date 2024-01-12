@@ -1,12 +1,12 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import ChangePassword from '../features/ChangePassword';
+import ChangePassword from '../features/login/ChangePassword';
 import Home from '../features/Home';
 import Legal from '../features/Legal';
-import Login from '../features/Login';
-import Register from '../features/Register';
-import ResetPassword from '../features/ResetPassword';
-import VerifyEmail from '../features/VerifyEmail';
+import Login from '../features/login/Login';
+import Register from '../features/login/Register';
+import ResetPassword from '../features/login/ResetPassword';
+import VerifyEmail from '../features/login/VerifyEmail';
 import {
   CHANGE_PASSWORD, HOME, LOGIN, MENTIONS_LEGALES, REGISTER, RESET_PASSWORD, RGPD, VERIFY_EMAIL,
 } from '../Routes';
@@ -16,7 +16,7 @@ import Header from './Header';
 export default function Router() {
   return (
     <div className="page-layout">
-      <Header />
+      <Header/>
       <div className="main-layout">
         <Routes>
           <Route path={REGISTER} element={<Register />} />

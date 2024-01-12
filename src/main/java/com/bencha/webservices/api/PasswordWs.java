@@ -2,14 +2,17 @@ package com.bencha.webservices.api;
 
 import com.bencha.db.generated.VerificationToken;
 import com.bencha.enums.VerificationTokenType;
+import com.bencha.services.GoogleService;
 import com.bencha.services.UserService;
 import com.bencha.services.VerificationService;
 import com.bencha.webservices.beans.PasswordModificationRequest;
+import com.bencha.webservices.beans.Recaptcha;
 import com.bencha.webservices.errors.ProjectWsErrors;
 import com.coreoz.plume.jersey.errors.WsException;
 import com.coreoz.plume.jersey.security.permission.PublicApi;
 import com.google.common.base.Strings;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import javax.inject.Inject;
@@ -27,14 +30,17 @@ import java.time.Instant;
 public class PasswordWs {
     private final VerificationService verificationService;
     private final UserService userService;
+    private final GoogleService googleService;
 
     @Inject
     public PasswordWs(
         VerificationService verificationService,
-        UserService userService
+        UserService userService,
+        GoogleService googleService
     ) {
         this.verificationService = verificationService;
         this.userService = userService;
+        this.googleService = googleService;
     }
 
     @POST
@@ -61,7 +67,10 @@ public class PasswordWs {
     @POST
     @Path("/reset")
     @Operation(description = "Send password reset email")
-    public void sendResetPasswordEmail(@QueryParam("email") String email) {
+    public void sendResetPasswordEmail(@QueryParam("email") String email, @RequestBody Recaptcha recaptchaResponse) {
+        if (!googleService.isCaptchaOk(recaptchaResponse.getReCaptchaResponse())) {
+            throw new WsException(ProjectWsErrors.RECAPTCHA_ERROR);
+        }
         verificationService.resetPasswordEmail(email);
     }
 }

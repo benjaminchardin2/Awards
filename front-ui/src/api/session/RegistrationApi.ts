@@ -12,11 +12,14 @@ export default class RegistrationApi {
   constructor(private readonly httpClient: ApiHttpClient) {
   }
 
-  register(registration: Registration) {
+  register(registration: Registration, reCaptchaResponse: string | null) {
     return this
       .httpClient
       .restRequest<RefreshableJwtToken>(HttpMethod.POST, '/register')
-      .jsonBody(registration)
+      .jsonBody({
+        ...registration,
+        recaptcha: reCaptchaResponse,
+      })
       .execute();
   }
 }

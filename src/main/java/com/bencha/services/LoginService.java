@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableSet;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Optional;
+import java.util.Set;
 
 @Singleton
 public class LoginService {
@@ -31,5 +32,9 @@ public class LoginService {
                 user,
                 ImmutableSet.copyOf(adminRoleService.findRolePermissions(user.getIdRole()))
             ));
+    }
+
+    public Set<String> findUserPermissions(Long idRole) {
+        return ImmutableSet.copyOf(adminRoleService.findRolePermissions(idRole));
     }
 }

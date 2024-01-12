@@ -17,11 +17,14 @@ export default class ResetPasswordApi {
       .execute();
   }
 
-  resetPassword(email: string) {
+  resetPassword(email: string, reCaptchaResponse: string) {
     return this
       .httpClient
       .restRequest<void>(HttpMethod.POST, '/passwords/reset')
       .queryParams([['email', email]])
+      .jsonBody(({
+        reCaptchaResponse,
+      }))
       .execute();
   }
 }

@@ -66,4 +66,11 @@ export default class SessionService {
   synchronizeSessionFromOtherBrowserTags() {
     this.jwtSessionManager.synchronizeSessionFromOtherBrowserTabs();
   }
+
+  authenticateWithGoogle(token: string) {
+    return this
+      .sessionApi
+      .authenticateWithGoogle(token)
+      .then((sessionToken: RefreshableJwtToken) => this.jwtSessionManager.registerNewSession(sessionToken));
+  }
 }

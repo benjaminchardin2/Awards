@@ -15,9 +15,11 @@ CREATE TABLE  `PLM_USER` (
                              `last_name` varchar(255) NULL,
                              `email` varchar(255) NOT NULL,
                              `user_name` varchar(255) NOT NULL,
-                             `password` varchar(255) NOT NULL,
+                             `password` varchar(255) NULL,
                              `validated` boolean NOT NULL DEFAULT FALSE,
                              `rgpd_ok` boolean NOT NULL DEFAULT FALSE,
+                             `google_sub` varchar(255) NULL,
+                             `user_hashtag` varchar(255) NULL,
                              PRIMARY KEY  (`id`),
                              UNIQUE KEY `uniq_plm_user_email` (`email`),
                              CONSTRAINT `plm_user_role` FOREIGN KEY (`id_role`) REFERENCES `PLM_ROLE` (`id`)

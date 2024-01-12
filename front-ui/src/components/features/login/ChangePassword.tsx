@@ -8,14 +8,14 @@ import { FormContainer } from 'react-hook-form-mui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { HttpError } from 'simple-http-rest-client';
-import useLoader, { LoaderState } from '../../lib/plume-http-react-hook-loader/promiseLoaderHook';
-import useMessages from '../../i18n/hooks/messagesHook';
-import FormField from '../theme/form/FormField';
-import InputText from '../theme/form/fields/InputText';
-import { ActionButton, ActionsContainer } from '../theme/action/Actions';
-import useTimeout from '../../lib/plume-http-react-hook-loader/timeoutHook';
-import { HOME, LOGIN } from '../Routes';
-import ResetPasswordApi from '../../api/reset-password/ResetPasswordApi';
+import useLoader, { LoaderState } from '../../../lib/plume-http-react-hook-loader/promiseLoaderHook';
+import useMessages from '../../../i18n/hooks/messagesHook';
+import FormField from '../../theme/form/FormField';
+import InputText from '../../theme/form/fields/InputText';
+import { ActionButton, ActionsContainer } from '../../theme/action/Actions';
+import useTimeout from '../../../lib/plume-http-react-hook-loader/timeoutHook';
+import { HOME, LOGIN } from '../../Routes';
+import ResetPasswordApi from '../../../api/reset-password/ResetPasswordApi';
 
 export default function ChangePassword() {
   const [searchParams] = useSearchParams();

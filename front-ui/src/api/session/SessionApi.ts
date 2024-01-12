@@ -27,4 +27,12 @@ export default class SessionApi implements SessionRefresher {
       .body(webSessionToken)
       .execute();
   }
+
+  authenticateWithGoogle(token: string) {
+    return this
+      .httpClient
+      .restRequest<RefreshableJwtToken>(HttpMethod.POST, '/login/google')
+      .jsonBody(token)
+      .execute();
+  }
 }

@@ -5,15 +5,15 @@ import {
 } from 'react-router-dom';
 import { Alert, CircularProgress } from '@mui/material';
 import { FormContainer } from 'react-hook-form-mui';
-import VerifyEmailApi from '../../api/verify-email/VerifyEmailApi';
-import useLoader, { LoaderState } from '../../lib/plume-http-react-hook-loader/promiseLoaderHook';
-import { useOnComponentMounted } from '../../lib/react-hooks-alias/ReactHooksAlias';
-import useMessages from '../../i18n/hooks/messagesHook';
-import FormField from '../theme/form/FormField';
-import InputText from '../theme/form/fields/InputText';
-import { ActionButton, ActionsContainer } from '../theme/action/Actions';
-import useTimeout from '../../lib/plume-http-react-hook-loader/timeoutHook';
-import { HOME, LOGIN } from '../Routes';
+import VerifyEmailApi from '../../../api/verify-email/VerifyEmailApi';
+import useLoader, { LoaderState } from '../../../lib/plume-http-react-hook-loader/promiseLoaderHook';
+import { useOnComponentMounted } from '../../../lib/react-hooks-alias/ReactHooksAlias';
+import useMessages from '../../../i18n/hooks/messagesHook';
+import FormField from '../../theme/form/FormField';
+import InputText from '../../theme/form/fields/InputText';
+import { ActionButton, ActionsContainer } from '../../theme/action/Actions';
+import useTimeout from '../../../lib/plume-http-react-hook-loader/timeoutHook';
+import { HOME, LOGIN } from '../../Routes';
 
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();

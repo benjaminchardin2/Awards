@@ -1,9 +1,8 @@
 package com.bencha.db.generated;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.querydsl.sql.Column;
-
 import javax.annotation.processing.Generated;
+import com.querydsl.sql.Column;
 
 /**
  * User is a Querydsl bean type
@@ -20,12 +19,15 @@ public class User extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
     @Column("first_name")
     private String firstName;
 
-    @Column("id")
+    @Column("google_sub")
+    private String googleSub;
+
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("id")
     private Long id;
 
-    @Column("id_role")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("id_role")
     private Long idRole;
 
     @Column("last_name")
@@ -36,6 +38,9 @@ public class User extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
 
     @Column("rgpd_ok")
     private Boolean rgpdOk;
+
+    @Column("user_hashtag")
+    private String userHashtag;
 
     @Column("user_name")
     private String userName;
@@ -65,6 +70,14 @@ public class User extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getGoogleSub() {
+        return googleSub;
+    }
+
+    public void setGoogleSub(String googleSub) {
+        this.googleSub = googleSub;
     }
 
     public Long getId() {
@@ -105,6 +118,14 @@ public class User extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
 
     public void setRgpdOk(Boolean rgpdOk) {
         this.rgpdOk = rgpdOk;
+    }
+
+    public String getUserHashtag() {
+        return userHashtag;
+    }
+
+    public void setUserHashtag(String userHashtag) {
+        this.userHashtag = userHashtag;
     }
 
     public String getUserName() {

@@ -7,6 +7,7 @@ import LegalApi from './legal/LegalApi';
 import RegistrationApi from './session/RegistrationApi';
 import VerifyEmailApi from './verify-email/VerifyEmailApi';
 import ResetPasswordApi from './reset-password/ResetPasswordApi';
+import ConfigurationApi from './configuration/ConfigurationApi';
 
 export default function installApiModule(injector: Injector) {
   injector.registerSingleton(ApiHttpClient);
@@ -17,4 +18,5 @@ export default function installApiModule(injector: Injector) {
   injector.registerSingleton(RegistrationApi);
   injector.registerSingleton(VerifyEmailApi);
   injector.registerSingleton(ResetPasswordApi);
+  injector.registerSingleton(ConfigurationApi);
 }

@@ -122,6 +122,11 @@ const frMessages: Translations = {
       + 'inconnu ou bien expiré vous pouvez en redemander un ici',
     PASSWORD_MODIFICATION_UNKNOWN: 'Ce lien de réinitialisation est '
       + 'inconnu ou bien expiré',
+    CANNOT_AUTHENTICATE_THROUGH_GOOGLE: 'L\'authentification via Google est indisponible',
+    RECAPTCHA_ERROR: 'Le captcha est invalide, veuillez réessayer',
+  },
+  google: {
+    recaptcha: 'Cochez la case "Je ne suis pas un robot"',
   },
 } as const;
 

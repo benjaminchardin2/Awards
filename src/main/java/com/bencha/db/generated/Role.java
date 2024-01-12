@@ -1,9 +1,8 @@
 package com.bencha.db.generated;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.querydsl.sql.Column;
-
 import javax.annotation.processing.Generated;
+import com.querydsl.sql.Column;
 
 /**
  * Role is a Querydsl bean type
@@ -11,8 +10,8 @@ import javax.annotation.processing.Generated;
 @Generated("com.coreoz.plume.db.querydsl.generation.IdBeanSerializer")
 public class Role extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
 
-    @Column("id")
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("id")
     private Long id;
 
     @Column("label")

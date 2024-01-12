@@ -9,10 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AccountCreationRequest {
-    private String userName;
-    private String email;
-    private String password;
-    private Boolean rgpd;
-    private String recaptcha;
+public class Recaptcha {
+    private String reCaptchaResponse;
 }

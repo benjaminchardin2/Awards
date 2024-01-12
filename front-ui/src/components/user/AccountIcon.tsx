@@ -25,6 +25,7 @@ export default function AccountIcon() {
 
   const disconnect = () => {
     sessionService.disconnect();
+    navigate(LOGIN);
   };
   const onMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
