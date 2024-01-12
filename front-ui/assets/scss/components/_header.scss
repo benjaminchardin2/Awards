@@ -10,7 +10,10 @@
   padding-bottom: $spacer-5;
   background-color: $black;
   color: $gray-lighter;
-  position: relative;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1;
 
   h1 {
     cursor: pointer;
