@@ -42,11 +42,17 @@ p {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  overflow: auto;
+  padding-top: 50px;
+  padding-bottom: 50px;
 
   .main-layout {
-    margin-left: $spacer-5;
-    margin-right: $spacer-5;
-    margin-top: $spacer-7;
     flex-grow: 1;
+    display: flex;
+
+    .content {
+      flex-grow: 1;
+      margin: $spacer-4;
+    }
   }
 }
