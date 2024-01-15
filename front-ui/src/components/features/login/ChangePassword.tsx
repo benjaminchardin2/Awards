@@ -15,7 +15,7 @@ import InputText from '../../theme/form/fields/InputText';
 import { ActionButton, ActionsContainer } from '../../theme/action/Actions';
 import useTimeout from '../../../lib/plume-http-react-hook-loader/timeoutHook';
 import { HOME, LOGIN } from '../../Routes';
-import ResetPasswordApi from '../../../api/reset-password/ResetPasswordApi';
+import PasswordApi from '../../../api/reset-password/PasswordApi';
 
 export default function ChangePassword() {
   const [searchParams] = useSearchParams();
@@ -24,7 +24,7 @@ export default function ChangePassword() {
   const { messages, httpError } = useMessages();
   const [success, setSuccess] = useState<boolean>(false);
   const token: string | null = searchParams.get('token');
-  const resetPasswordApi: ResetPasswordApi = getGlobalInstance(ResetPasswordApi);
+  const resetPasswordApi: PasswordApi = getGlobalInstance(PasswordApi);
   const { restartTimeout: goToLogIn } = useTimeout(() => navigate(LOGIN), 10000, true);
   const { restartTimeout: goToHome } = useTimeout(() => navigate(HOME), 30000, true);
 

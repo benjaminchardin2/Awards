@@ -21,6 +21,10 @@ const frMessages: Translations = {
     disconnect: 'Me déconnecter',
     keep_editing: 'Rester sur la page',
     close_without_saving: 'Fermer sans sauvegarder',
+    profile: 'Mon profil',
+    delete_account: 'Supprimer mon compte',
+    confirm_password: 'Confirmez votre mot de passe pour continuer',
+    account_will_be_deleted: 'Votre compte sera supprimé',
   },
   // common labels
   label: {
@@ -66,11 +70,14 @@ const frMessages: Translations = {
     resetOk: 'Si votre compte existe et que vous n\'avez pas de lien de modification de mot de passe actif,'
       + '\n vous allez recevoir un mail',
     changeOk: 'Votre mot de passe a été modifié',
+    deletedOk: 'Votre compte a bien été supprimé',
     password_forgotten: 'Mot de passe oublié ?',
   },
   // users
   users: {
     userName: 'Nom d\'utilisateur',
+    password_actual: 'Mot de passe actuel',
+    password_new: 'Nouveau mot de passe',
     password: 'Mot de passe',
     verify: 'Vérification du mot de passe',
     email: 'E-mail',
@@ -85,6 +92,8 @@ const frMessages: Translations = {
     required: (field: string) => `le champ ${field} est obligatoire`,
     different: 'Les champs "mot de passe" et "confirmation du mot de passe" doivent être identiques',
     rgpd: 'Veuillez accepter la politique rgpd',
+    maxLengthNoField: (size: number) => `doit faire moins de ${size} caractères`,
+    requiredNoField: 'ne peut pas être vide',
   },
   // errors
   error: {
@@ -104,6 +113,7 @@ const frMessages: Translations = {
     verify_email: 'Vérification du compte',
     change_password: 'Changement de mot de passe',
     reset_password: 'Mot de passe oublié',
+    account: 'Mon compte',
   },
   'http-errors': {
     INTERNAL_ERROR: 'Une erreur inattendue s\'est produite',
@@ -124,6 +134,7 @@ const frMessages: Translations = {
       + 'inconnu ou bien expiré',
     CANNOT_AUTHENTICATE_THROUGH_GOOGLE: 'L\'authentification via Google est indisponible',
     RECAPTCHA_ERROR: 'Le captcha est invalide, veuillez réessayer',
+    INVALID_PASSWORD: 'Mot de passe incorrect',
   },
   google: {
     recaptcha: 'Cochez la case "Je ne suis pas un robot"',

@@ -24,6 +24,10 @@ export type Translations = {
     disconnect: string,
     keep_editing: string,
     close_without_saving: string,
+    profile: string,
+    delete_account: string,
+    confirm_password: string,
+    account_will_be_deleted: string,
   },
   // common labels
   label: {
@@ -58,11 +62,14 @@ export type Translations = {
     resetOk: string,
     resendOk: string,
     changeOk: string,
+    deletedOk: string,
     password_forgotten: string,
   },
   // users
   users: {
     userName: string,
+    password_actual: string,
+    password_new: string,
     password: string,
     verify: string,
     email: string,
@@ -77,6 +84,8 @@ export type Translations = {
     required: (field: string) => string,
     different: string,
     rgpd: string,
+    maxLengthNoField: (size: number) => string,
+    requiredNoField: string,
   },
   // errors
   error: {
@@ -98,6 +107,7 @@ export type Translations = {
     verify_email: string,
     change_password: string,
     reset_password: string,
+    account: string,
   },
 
   'http-errors': {
@@ -115,6 +125,7 @@ export type Translations = {
     PASSWORD_MODIFICATION_UNKNOWN: string,
     CANNOT_AUTHENTICATE_THROUGH_GOOGLE: string,
     RECAPTCHA_ERROR: string,
+    INVALID_PASSWORD: string,
   },
   google: {
     recaptcha: string,

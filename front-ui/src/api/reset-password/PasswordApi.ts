@@ -1,12 +1,19 @@
 import { HttpMethod } from 'simple-http-request-builder';
 import ApiHttpClient from '../ApiHttpClient';
+import ApiHttpClientAuthenticated from '../ApiHttpClientAuthenticated';
 
 export type PasswordModificationRequest = {
   newPassword: string,
   token: string | null,
 };
-export default class ResetPasswordApi {
-  constructor(private readonly httpClient: ApiHttpClient) {
+
+export type PasswordModificationFromUser = {
+  newPassword: string,
+  oldPassword: string,
+};
+
+export default class PasswordApi {
+  constructor(private readonly httpClient: ApiHttpClient, private readonly httpClientAuthenticated: ApiHttpClientAuthenticated) {
   }
 
   changePassword(passwordModificationRequest: PasswordModificationRequest) {
@@ -25,6 +32,14 @@ export default class ResetPasswordApi {
       .jsonBody(({
         reCaptchaResponse,
       }))
+      .execute();
+  }
+
+  modifyPassword(password: PasswordModificationFromUser) {
+    return this
+      .httpClientAuthenticated
+      .restRequest<void>(HttpMethod.PUT, '/passwords/modify')
+      .jsonBody(password)
       .execute();
   }
 }

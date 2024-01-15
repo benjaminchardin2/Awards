@@ -9,4 +9,5 @@ public enum ProjectWsErrors implements WsError {
     USER_SUB_ALREADY_EXISTS,
     CANNOT_AUTHENTICATE_THROUGH_GOOGLE,
     RECAPTCHA_ERROR,
+    INVALID_PASSWORD,
 }

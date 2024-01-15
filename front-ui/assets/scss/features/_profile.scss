@@ -1,0 +1,88 @@
+@use "../variables" as *;
+
+.profile {
+  display: flex;
+  justify-content: center;
+  .MuiCard-root {
+    width: 600px;
+
+    .MuiCardHeader-root {
+      background-color: $black;
+      color: white;
+    }
+
+    .profile-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: $spacer-4;
+
+      form {
+        margin: 0;
+        width: 100%;
+
+        .profile-username-form {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+
+          .profile-username-hashtag {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            .MuiFormControl-root {
+              margin: 0;
+
+              .MuiInputBase-input {
+                font-size: $font-size-large;
+                padding: $spacer-1;
+              }
+            }
+          }
+
+          .profile-username-icons {
+            display: flex;
+            flex-direction: row;
+          }
+        }
+      }
+    }
+    .profile-password {
+      margin: $spacer-4 0;
+      display: flex;
+      flex-direction: column;
+
+      form {
+        margin: 0;
+      }
+
+      .actions {
+        justify-content: unset;
+      }
+    }
+
+    .profile-delete {
+      margin: $spacer-4 0;
+      display: flex;
+      flex-direction: column;
+
+      form {
+        margin: 0;
+      }
+
+      .actions {
+        justify-content: unset;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .profile {
+    .MuiCard-root {
+      width: 100%;
+    }
+  }
+}

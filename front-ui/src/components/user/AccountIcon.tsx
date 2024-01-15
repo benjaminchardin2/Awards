@@ -6,12 +6,14 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import { getGlobalInstance } from 'plume-ts-di';
 import { ListItemIcon, MenuItem } from '@mui/material';
-import { AppRegistration, Login, Logout } from '@mui/icons-material';
+import {
+  AppRegistration, Login, Logout, Portrait,
+} from '@mui/icons-material';
 import { useObservable } from 'micro-observables';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import SessionService from '../../services/session/SessionService';
 import useMessages from '../../i18n/hooks/messagesHook';
-import { LOGIN, REGISTER } from '../Routes';
+import { LOGIN, PROFILE, REGISTER } from '../Routes';
 import { UserWithExpiration } from '../../services/session/User';
 
 export default function AccountIcon() {
@@ -27,6 +29,11 @@ export default function AccountIcon() {
     sessionService.disconnect();
     navigate(LOGIN);
   };
+
+  const goToProfile = () => {
+    navigate(PROFILE);
+  };
+
   const onMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
     setOpen(true);
@@ -66,6 +73,12 @@ export default function AccountIcon() {
       >
         {isAuthenticated
           ? [
+            <MenuItem onClick={goToProfile} key="profile">
+              <ListItemIcon>
+                <Portrait fontSize="small" />
+              </ListItemIcon>
+              {messages.action.profile}
+            </MenuItem>,
             <MenuItem onClick={disconnect} key="logout">
               <ListItemIcon>
                 <Logout fontSize="small" />
