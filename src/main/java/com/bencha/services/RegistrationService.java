@@ -22,14 +22,16 @@ public class RegistrationService {
     private final HashService hashService;
     private final VerificationService verificationService;
     private final GoogleService googleService;
+    private final UserService userService;
 
     @Inject
-    public RegistrationService(UserDao userDao, AdminUserService adminUserService, HashService hashService, VerificationService verificationService, GoogleService googleService) {
+    public RegistrationService(UserDao userDao, AdminUserService adminUserService, HashService hashService, VerificationService verificationService, GoogleService googleService, UserService userService) {
         this.adminUserService = adminUserService;
         this.userDao = userDao;
         this.hashService = hashService;
         this.verificationService = verificationService;
         this.googleService = googleService;
+        this.userService = userService;
     }
 
     public void registerUser(AccountCreationRequest accountCreationRequest) {
@@ -51,6 +53,7 @@ public class RegistrationService {
         user.setUserName(accountCreationRequest.getUserName());
         user.setPassword(hashService.hashPassword(accountCreationRequest.getPassword()));
         user.setIdRole(1L);
+        user.setUserHashtag(userService.getUserHashtagForUsername(accountCreationRequest.getUserName()));
         user.setRgpdOk(accountCreationRequest.getRgpd());
         user.setValidated(false);
         user = userDao.save(user);
@@ -66,6 +69,7 @@ public class RegistrationService {
         user.setIdRole(1L);
         user.setRgpdOk(true);
         user.setValidated(true);
+        user.setUserHashtag(userService.getUserHashtagForUsername((String) payload.get("name")));
         user = userDao.save(user);
         return user;
     }

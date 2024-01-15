@@ -16,7 +16,6 @@ export default function FormField({
 
   const { errors } = useFormState({ name: fieldId });
   const fieldError: FieldError | undefined = error || get(errors, fieldId);
-
   return (
     <FormControl className="form-control" error={fieldError !== undefined}>
       <InputLabel htmlFor={inputId}>{label}</InputLabel>

@@ -47,4 +47,11 @@ public class VerificationTokenDao extends CrudDaoQuerydsl<VerificationToken> {
             .where(QVerificationToken.verificationToken.expirationDate.before(Instant.now()))
             .execute();
     }
+
+    public void deleteUsersVerificationTokens(Long userId) {
+        transactionManager
+            .delete(QVerificationToken.verificationToken)
+            .where(QVerificationToken.verificationToken.userId.eq(userId))
+            .execute();
+    }
 }

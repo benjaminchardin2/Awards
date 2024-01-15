@@ -9,6 +9,7 @@ import com.querydsl.sql.SQLExpressions;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 import java.util.Optional;
 
 @Singleton
@@ -40,12 +41,12 @@ public class UserDao extends CrudDaoQuerydsl<User> {
         );
     }
 
-    public Boolean existsWithSub(String googleSub) {
+    public List<String> findUserHashtagsWithUserName(String username) {
         return transactionManager
             .selectQuery()
-            .select(SQLExpressions.selectOne())
+            .select(QUser.user.userHashtag)
             .from(QUser.user)
-            .where(QUser.user.googleSub.eq(googleSub))
-            .fetchOne() != null;
+            .where(QUser.user.userName.eq(username))
+            .fetch();
     }
 }

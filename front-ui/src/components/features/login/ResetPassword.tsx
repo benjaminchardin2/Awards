@@ -13,7 +13,7 @@ import InputText from '../../theme/form/fields/InputText';
 import { ActionButton, ActionsContainer } from '../../theme/action/Actions';
 import useTimeout from '../../../lib/plume-http-react-hook-loader/timeoutHook';
 import { HOME } from '../../Routes';
-import ResetPasswordApi from '../../../api/reset-password/ResetPasswordApi';
+import PasswordApi from '../../../api/reset-password/PasswordApi';
 import useGoogleReCaptcha from '../../../services/hooks/useGoogleReCaptcha';
 import GoogleService from '../../../services/session/GoogleService';
 import { GoogleConfiguration } from '../../../api/configuration/ConfigurationApi';
@@ -23,7 +23,7 @@ export default function ResetPassword() {
   const navigate: NavigateFunction = useNavigate();
   const { messages, httpError } = useMessages();
   const [success, setSuccess] = useState<boolean>(false);
-  const resetPasswordApi: ResetPasswordApi = getGlobalInstance(ResetPasswordApi);
+  const resetPasswordApi: PasswordApi = getGlobalInstance(PasswordApi);
   const { restartTimeout: goToHome } = useTimeout(() => navigate(HOME), 30000, true);
   const googleService: GoogleService = getGlobalInstance(GoogleService);
   const {
