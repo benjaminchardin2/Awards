@@ -15,7 +15,7 @@ import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 
 /**
- * QAward is a Querydsl query type for Award
+ * QAward is a Querydsl query type for Awards
  */
 @Generated("com.querydsl.sql.codegen.MetaDataSerializer")
 public class QAward extends com.querydsl.sql.RelationalPathBase<Award> {

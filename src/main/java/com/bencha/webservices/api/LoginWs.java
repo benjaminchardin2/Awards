@@ -186,7 +186,15 @@ public class LoginWs {
             throw new WsException(ProjectWsErrors.CANNOT_AUTHENTICATE_THROUGH_GOOGLE);
         }
         // first user needs to be authenticated (an exception will be raised otherwise)
-        Optional<User> optUser = googleService.findUserByGoogleSub(googleIdToken.getPayload().getSubject());
+        Optional<User> optUser = googleService.findUserByGoogleSub(googleIdToken.getPayload().getSubject())
+            .or(() -> {
+                Optional<User> user = googleService.findByEmail(googleIdToken.getPayload().getEmail());
+                user.ifPresent(value -> googleService.updateUserWithGoogleInformation(
+                    value,
+                    googleIdToken.getPayload()
+                ));
+                return user;
+            });
         User user;
         user = optUser.orElseGet(() -> registrationService.registerUserWithGoogleIdToken(googleIdToken.getPayload()));
         AuthenticatedSimpleUser authenticatedUser = AuthenticatedSimpleUser.of(

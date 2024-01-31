@@ -28,6 +28,7 @@ export type Translations = {
     delete_account: string,
     confirm_password: string,
     account_will_be_deleted: string,
+    select: string,
   },
   // common labels
   label: {
@@ -103,6 +104,10 @@ export type Translations = {
     rgpd: string,
   },
 
+  slider: {
+    previous: string,
+    next: string,
+  },
   titles: {
     verify_email: string,
     change_password: string,
@@ -129,5 +134,9 @@ export type Translations = {
   },
   google: {
     recaptcha: string,
+  },
+  ceremony: {
+    selected: string,
+    yourChoice: (title: string | undefined) => string,
   },
 };

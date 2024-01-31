@@ -19,6 +19,9 @@ public class AwardNominee extends com.coreoz.plume.db.querydsl.crud.CrudEntityQu
     @Column("id")
     private Long id;
 
+    @Column("name_override")
+    private String nameOverride;
+
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("tdmb_movie_id")
     private Long tdmbMovieId;
@@ -41,6 +44,14 @@ public class AwardNominee extends com.coreoz.plume.db.querydsl.crud.CrudEntityQu
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNameOverride() {
+        return nameOverride;
+    }
+
+    public void setNameOverride(String nameOverride) {
+        this.nameOverride = nameOverride;
     }
 
     public Long getTdmbMovieId() {

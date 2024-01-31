@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { getGlobalInstance } from 'plume-ts-di';
-import { useObservable } from 'micro-observables';
 import ChangePassword from '../features/login/ChangePassword';
 import Home from '../features/Home';
 import Legal from '../features/Legal';
@@ -11,7 +10,16 @@ import ResetPassword from '../features/login/ResetPassword';
 import VerifyEmail from '../features/login/VerifyEmail';
 import {
   ACCOUNT_DELETED,
-  CHANGE_PASSWORD, HOME, LOGIN, MENTIONS_LEGALES, PROFILE, REGISTER, RESET_PASSWORD, RGPD, VERIFY_EMAIL,
+  CEREMONY_PAGE,
+  CHANGE_PASSWORD,
+  HOME,
+  LOGIN,
+  MENTIONS_LEGALES,
+  PROFILE,
+  REGISTER,
+  RESET_PASSWORD,
+  RGPD,
+  VERIFY_EMAIL,
 } from '../Routes';
 import Footer from './Footer';
 import Header from './Header';
@@ -19,6 +27,7 @@ import ConditionalRoute from '../navigation/routes/ConditionalRoute';
 import SessionService from '../../services/session/SessionService';
 import Profile from '../features/profile/Profile';
 import DeletedAccount from '../features/deleted-account/DeletedAccount';
+import Ceremony from '../features/ceremony/Ceremony';
 
 export default function Router() {
   const sessionService: SessionService = getGlobalInstance(SessionService);
@@ -43,6 +52,7 @@ export default function Router() {
                 <Profile />
               </ConditionalRoute>
             )} />
+            <Route path={CEREMONY_PAGE} element={<Ceremony />} />
             <Route path="*" element={<Navigate to={{ pathname: HOME }} />} />
           </Routes>
         </div>

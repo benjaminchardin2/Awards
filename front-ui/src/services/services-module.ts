@@ -6,6 +6,7 @@ import ObservableNotificationEngine from '../lib/plume-notification/ObservableNo
 import NotificationEngine from '../lib/plume-notification/NotificationEngine';
 import LegalService from './legal/LegalService';
 import GoogleService from './session/GoogleService';
+import CeremonyPicksService from './ceremony/CeremonyPicksService';
 
 export default function installServicesModule(injector: Injector) {
   // browser dependent services
@@ -18,4 +19,5 @@ export default function installServicesModule(injector: Injector) {
   injector.registerSingleton(Scheduler);
   injector.registerSingleton(LegalService);
   injector.registerSingleton(GoogleService);
+  injector.registerSingleton(CeremonyPicksService);
 }

@@ -7,5 +7,6 @@ export const RGPD: string = '/rgpd';
 export const VERIFY_EMAIL: string = '/verify-email';
 export const CHANGE_PASSWORD: string = '/change-password';
 export const RESET_PASSWORD: string = '/reset-password';
-
 export const ACCOUNT_DELETED: string = '/account-deleted';
+export const CEREMONY: string = '/ceremony';
+export const CEREMONY_PAGE: string = `${CEREMONY}/:id`;

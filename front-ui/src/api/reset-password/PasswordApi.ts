@@ -13,7 +13,10 @@ export type PasswordModificationFromUser = {
 };
 
 export default class PasswordApi {
-  constructor(private readonly httpClient: ApiHttpClient, private readonly httpClientAuthenticated: ApiHttpClientAuthenticated) {
+  constructor(
+    private readonly httpClient: ApiHttpClient,
+    private readonly httpClientAuthenticated: ApiHttpClientAuthenticated,
+  ) {
   }
 
   changePassword(passwordModificationRequest: PasswordModificationRequest) {

@@ -1,6 +1,8 @@
 @use "../variables" as *;
 
 .home {
+  margin: $spacer-4;
+
   .highlight-row {
     display: flex;
     flex-direction: row;
@@ -10,6 +12,12 @@
       &.MuiCard-root {
         display: flex;
         flex-direction: column;
+
+        .MuiTypography-root {
+          a {
+            color: inherit;
+          }
+        }
 
         .MuiCardHeader-root {
           position: relative;
@@ -52,7 +60,7 @@
             flex-direction: column;
             justify-content: space-between;
 
-            .MuiLink-root {
+            a {
               color: $black;
               font-weight: bold;
             }

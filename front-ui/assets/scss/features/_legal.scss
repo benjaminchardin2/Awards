@@ -1,6 +1,8 @@
 @use "../variables" as *;
 
 .legal {
+  margin: $spacer-4;
+
   section {
     margin: 2rem;
   }

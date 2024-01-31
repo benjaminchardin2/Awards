@@ -1,10 +1,11 @@
 package com.bencha.webservices.api;
 
 import com.bencha.db.generated.Ceremony;
+import com.bencha.services.AwardService;
 import com.bencha.services.CeremonyService;
-import com.bencha.webservices.beans.CeremonyRequest;
-import com.bencha.webservices.beans.PaginatedRequest;
-import com.bencha.webservices.beans.PaginatedResponse;
+import com.bencha.services.PronosticService;
+import com.bencha.webservices.beans.*;
+import com.coreoz.plume.admin.websession.WebSessionAdmin;
 import com.coreoz.plume.jersey.security.permission.PublicApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,8 +14,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.Map;
 
 @Path("/ceremonies")
 @Tag(name = "ceremonies", description = "Interactions linked to ceremonies")
@@ -25,10 +28,14 @@ import java.util.List;
 public class CeremonyWs {
     private static final Integer DEFAULT_LIMIT = 4;
     private final CeremonyService ceremonyService;
+    private final AwardService awardService;
+    private final PronosticService pronosticService;
 
     @Inject
-    public CeremonyWs(CeremonyService ceremonyService) {
+    public CeremonyWs(CeremonyService ceremonyService, AwardService awardService, PronosticService pronosticService) {
         this.ceremonyService = ceremonyService;
+        this.awardService = awardService;
+        this.pronosticService = pronosticService;
     }
 
     @GET
@@ -50,5 +57,26 @@ public class CeremonyWs {
     @Operation(description = "Get the top two ceremonies highlighted")
     public List<Ceremony> findTop2Ceremonies() {
         return ceremonyService.findTop2Ceremonies();
+    }
+
+    @GET
+    @Path("/{id}/awards")
+    @Operation(description = "Get the top two ceremonies highlighted")
+    public List<AwardWithNominees> findCeremonyAwards(@PathParam("id") Long ceremonyId) {
+        return awardService.findCeremonyAwardsDto(ceremonyId);
+    }
+
+    @GET
+    @Path("/{id}/pronostics")
+    @Operation(description = "Get the top two ceremonies highlighted")
+    public Map<Long, PronosticChoice> findCeremonyPronostics(@PathParam("id") Long ceremonyId, @Context WebSessionAdmin webSessionAdmin) {
+        return pronosticService.findUserPronostics(webSessionAdmin.getIdUser(), ceremonyId);
+    }
+
+    @POST
+    @Path("/{id}/pronostics")
+    @Operation(description = "Get the top two ceremonies highlighted")
+    public void saveCeremonyPronostic(@PathParam("id") Long ceremonyId, @Context WebSessionAdmin webSessionAdmin, PronosticChoice pronosticChoice) {
+        pronosticService.saveUserChoice(webSessionAdmin.getIdUser(), ceremonyId, pronosticChoice);
     }
 }

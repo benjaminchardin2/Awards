@@ -16,10 +16,12 @@ import java.util.List;
 @Singleton
 public class CeremonyService {
     private final CeremonyDao ceremonyDao;
+    private final AwardService awardService;
 
     @Inject
-    public CeremonyService(CeremonyDao ceremonyDao) {
+    public CeremonyService(CeremonyDao ceremonyDao, AwardService awardService) {
         this.ceremonyDao = ceremonyDao;
+        this.awardService = awardService;
     }
 
     public PaginatedResponse<Ceremony> searchCeremonies(PaginatedRequest<CeremonyRequest> ceremonyRequest) {
@@ -42,5 +44,10 @@ public class CeremonyService {
 
     public List<Ceremony> findTop2Ceremonies() {
         return ceremonyDao.findTop2Ceremonies();
+    }
+
+    public void loadCacheForHighlightedCeremonies() {
+        ceremonyDao.findHighlightedCeremonies()
+            .forEach(awardService::loadCacheForCeremony);
     }
 }

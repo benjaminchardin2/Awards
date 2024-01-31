@@ -1,6 +1,7 @@
 @use "../variables" as *;
 
 .profile {
+  margin: $spacer-4;
   display: flex;
   justify-content: center;
   .MuiCard-root {

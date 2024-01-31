@@ -25,6 +25,7 @@ const frMessages: Translations = {
     delete_account: 'Supprimer mon compte',
     confirm_password: 'Confirmez votre mot de passe pour continuer',
     account_will_be_deleted: 'Votre compte sera supprimé',
+    select: 'Sélectionner',
   },
   // common labels
   label: {
@@ -109,6 +110,10 @@ const frMessages: Translations = {
     legal: 'Mentions Légales',
     rgpd: 'Politique RGPD',
   },
+  slider: {
+    previous: 'Précédent',
+    next: 'Suivant',
+  },
   titles: {
     verify_email: 'Vérification du compte',
     change_password: 'Changement de mot de passe',
@@ -138,6 +143,10 @@ const frMessages: Translations = {
   },
   google: {
     recaptcha: 'Cochez la case "Je ne suis pas un robot"',
+  },
+  ceremony: {
+    selected: 'Sélectionné',
+    yourChoice: (title: string | undefined) => (title ? `Choix actuel : ${title}` : 'Aucun choix'),
   },
 } as const;
 

@@ -68,4 +68,13 @@ public class CeremonyDao extends CrudDaoQuerydsl<Ceremony> {
             .limit(2)
             .fetch();
     }
+
+    public List<Long> findHighlightedCeremonies() {
+        return transactionManager
+            .selectQuery()
+            .select(QCeremony.ceremony.id)
+            .from(QCeremony.ceremony)
+            .where(QCeremony.ceremony.isHighlighted.eq(Boolean.TRUE))
+            .fetch();
+    }
 }

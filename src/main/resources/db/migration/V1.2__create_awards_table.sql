@@ -28,6 +28,7 @@ CREATE TABLE awd_award_nominee
     tdmb_movie_id  bigint(20) null,
     tdmb_person_id  bigint(20) null,
     award_id bigint(20) not null,
+    name_override text null,
     PRIMARY KEY (id),
     FOREIGN KEY (award_id) REFERENCES awd_award(id)
 );
@@ -60,7 +61,9 @@ CREATE TABLE awd_pronostic
     tdmb_movie_id  bigint(20) null,
     tdmb_person_id  bigint(20) null,
     award_id bigint(20) not null,
+    nominee_id bigint(20) null,
     PRIMARY KEY (id),
     FOREIGN KEY (user_participation_id) REFERENCES awd_user_participation(id),
-    FOREIGN KEY (award_id) REFERENCES awd_award(id)
+    FOREIGN KEY (award_id) REFERENCES awd_award(id),
+    FOREIGN KEY (nominee_id) REFERENCES awd_award_nominee(id)
 );
