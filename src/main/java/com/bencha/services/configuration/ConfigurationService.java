@@ -62,4 +62,5 @@ public class ConfigurationService {
     public String getGoogleReCaptchaPublicKey() { return config.getString("google.recaptcha.public"); }
     public String getGoogleReCaptchaPrivateKey() { return config.getString("google.recaptcha.private"); }
     public String getGoogleReCaptchaVerificationBaseUrl() { return config.getString("google.recaptcha.verify.url"); }
+    public String getTmdbApiKey() { return config.getString("tmdb.api.key"); }
 }

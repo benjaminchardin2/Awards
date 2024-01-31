@@ -1,6 +1,7 @@
 package com.bencha.guice;
 
 import com.bencha.jersey.JerseyConfigProvider;
+import com.bencha.jersey.TmdbApiProvider;
 import com.coreoz.plume.admin.guice.GuiceAdminWsWithDefaultsModule;
 import com.coreoz.plume.conf.guice.GuiceConfModule;
 import com.coreoz.plume.db.guice.DataSourceModule;
@@ -9,6 +10,7 @@ import com.coreoz.plume.jersey.monitoring.guice.GuiceJacksonWithMetricsModule;
 import com.coreoz.plume.mail.guice.GuiceMailModule;
 import com.coreoz.plume.scheduler.guice.GuiceSchedulerModule;
 import com.google.inject.AbstractModule;
+import info.movito.themoviedbapi.TmdbApi;
 import org.glassfish.jersey.server.ResourceConfig;
 
 /**
@@ -33,6 +35,8 @@ public class ApplicationModule extends AbstractModule {
 
         // Prepare Jersey configuration
 		bind(ResourceConfig.class).toProvider(JerseyConfigProvider.class);
-	}
+
+        bind(TmdbApi.class).toProvider(TmdbApiProvider.class);
+    }
 
 }

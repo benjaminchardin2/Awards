@@ -20,6 +20,10 @@ public class Pronostic extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuery
     private Long id;
 
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("nominee_id")
+    private Long nomineeId;
+
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("tdmb_movie_id")
     private Long tdmbMovieId;
 
@@ -45,6 +49,14 @@ public class Pronostic extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuery
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getNomineeId() {
+        return nomineeId;
+    }
+
+    public void setNomineeId(Long nomineeId) {
+        this.nomineeId = nomineeId;
     }
 
     public Long getTdmbMovieId() {

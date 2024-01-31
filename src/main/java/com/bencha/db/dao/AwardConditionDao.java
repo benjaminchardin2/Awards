@@ -5,10 +5,12 @@ import com.bencha.db.generated.QAwardCondition;
 import com.coreoz.plume.db.querydsl.crud.CrudDaoQuerydsl;
 import com.coreoz.plume.db.querydsl.transaction.TransactionManagerQuerydsl;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class AwardConditionDao extends CrudDaoQuerydsl<AwardCondition> {
+    @Inject
     public AwardConditionDao(TransactionManagerQuerydsl transactionManagerQuerydsl) {
         super(transactionManagerQuerydsl, QAwardCondition.awardCondition);
     }

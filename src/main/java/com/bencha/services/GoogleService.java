@@ -52,6 +52,9 @@ public class GoogleService {
         return userDao.findByGoogleSub(sub);
     }
 
+    public Optional<User> findByEmail(String email) {
+        return userDao.findByEmail(email);
+    }
     public Boolean isCaptchaOk(String captchaResponse) {
         CaptchaVerifyResponse captchaVerifyResponse = this.googleApiService.verifyCaptchaResponse(
             this.configurationService.getGoogleReCaptchaPrivateKey(),
@@ -61,5 +64,13 @@ public class GoogleService {
             return captchaVerifyResponse.getSuccess();
         }
         return false;
+    }
+
+    public void updateUserWithGoogleInformation(User user, GoogleIdToken.Payload payload) {
+        user.setGoogleSub(payload.getSubject());
+        user.setIdRole(1L);
+        user.setRgpdOk(true);
+        user.setValidated(true);
+        user = userDao.save(user);
     }
 }
