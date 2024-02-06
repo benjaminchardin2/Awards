@@ -1,5 +1,6 @@
 package com.bencha.webservices.beans;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PronosticChoice {
-    private Long participationId;
-    private Long nomineeId;
-    private Long awardId;
-    private Nominee nominee;
+public class SerializedId {
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    private Long id;
 }

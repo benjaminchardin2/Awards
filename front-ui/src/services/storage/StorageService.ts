@@ -9,6 +9,8 @@ export type StorageItem = {
 export default class StorageService {
   private static CEREMONY_KEY: string = 'CEREMONY:';
 
+  private static CEREMONY_PARTICIPATION_KEY: string = 'CEREMONY_PARTICIPATION:';
+
   private static retrieveItemIfNotExpired = (storageKey: string): any | undefined => {
     const objectStr: string | null = localStorage.getItem(storageKey);
     if (objectStr) {
@@ -48,7 +50,9 @@ export default class StorageService {
     );
   };
 
-  public static getCeremonyPicks = (ceremonyId: number): Promise<{ [key: string]: PronosticChoice } | undefined> => {
+  public static getCeremonyPicksToPromise = (
+    ceremonyId: number,
+  ): Promise<{ [key: string]: PronosticChoice } | undefined> => {
     const item: ({ [key: string]: PronosticChoice } | undefined) = StorageService
       .retrieveItemIfNotExpired(`${StorageService.CEREMONY_KEY}${ceremonyId}`);
     return new Promise(
@@ -56,5 +60,26 @@ export default class StorageService {
         resolve(item);
       },
     );
+  };
+
+  public static getCeremonyPicks = (
+    ceremonyId: number,
+  ): ({ [key: string]: PronosticChoice } | undefined) => StorageService
+    .retrieveItemIfNotExpired(`${StorageService.CEREMONY_KEY}${ceremonyId}`);
+
+  public static saveCeremonyParticipation = (participationId: string, ceremonyId: number) => new Promise<void>(
+    (resolve: () => void) => {
+      StorageService.setItemWithExpiry(participationId, `${StorageService.CEREMONY_PARTICIPATION_KEY}${ceremonyId}`);
+      resolve();
+    },
+  );
+
+  public static getCeremonyParticipation = (ceremonyId: number): (string | undefined) => {
+    const item: (string | undefined) = StorageService
+      .retrieveItemIfNotExpired(`${StorageService.CEREMONY_PARTICIPATION_KEY}${ceremonyId}`);
+    if (item) {
+      StorageService.setItemWithExpiry(item, `${StorageService.CEREMONY_PARTICIPATION_KEY}${ceremonyId}`);
+    }
+    return item;
   };
 }

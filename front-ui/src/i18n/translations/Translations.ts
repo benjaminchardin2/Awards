@@ -29,6 +29,10 @@ export type Translations = {
     confirm_password: string,
     account_will_be_deleted: string,
     select: string,
+    share: string,
+    copied: string,
+    make_own_pronostics: string,
+    go_home: string,
   },
   // common labels
   label: {
@@ -131,6 +135,7 @@ export type Translations = {
     CANNOT_AUTHENTICATE_THROUGH_GOOGLE: string,
     RECAPTCHA_ERROR: string,
     INVALID_PASSWORD: string,
+    SHARE_NOT_FOUND: string,
   },
   google: {
     recaptcha: string,
@@ -138,5 +143,11 @@ export type Translations = {
   ceremony: {
     selected: string,
     yourChoice: (title: string | undefined) => string,
+  },
+  'share-modal': {
+    title: string,
+    description: string,
+    content_not_connected: string,
+    content_connected: string,
   },
 };

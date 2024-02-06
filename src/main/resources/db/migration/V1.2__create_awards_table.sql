@@ -47,8 +47,9 @@ CREATE TABLE awd_award_condition
 CREATE TABLE awd_user_participation
 (
     id           bigint(20) not null,
-    user_id bigint(20) not null,
+    user_id bigint(20) null,
     ceremony_id bigint(20) not null,
+    share_code varchar(255) null,
     PRIMARY KEY (id),
     FOREIGN KEY (ceremony_id) REFERENCES awd_ceremony(id),
     FOREIGN KEY (user_id) REFERENCES plm_user(id)

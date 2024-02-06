@@ -10,4 +10,5 @@ public enum ProjectWsErrors implements WsError {
     CANNOT_AUTHENTICATE_THROUGH_GOOGLE,
     RECAPTCHA_ERROR,
     INVALID_PASSWORD,
+    SHARE_NOT_FOUND,
 }

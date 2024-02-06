@@ -1,0 +1,41 @@
+@use "../variables" as *;
+
+.MuiModal-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .MuiBox-root {
+    background-color: white;
+    border-radius: 5px;
+    margin: $spacer-4;
+    padding: $spacer-4;
+
+    .share-modal-title {
+      margin-bottom: $spacer-6;
+    }
+
+    .share-modal-content {
+      .MuiTypography-root {
+        white-space: pre-line;
+        margin-bottom: $spacer-4;
+      }
+
+      .copy-to-clipboard-row {
+        display: flex;
+        flex-direction: row;
+
+        .MuiInput-root {
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+}
+
+.MuiSnackbarContent-root {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-transform: uppercase;
+}

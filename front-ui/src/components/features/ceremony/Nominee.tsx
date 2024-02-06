@@ -12,18 +12,25 @@ type NomineeProps = {
   onClick: () => void,
   nominee: NomineeType,
   isSelected?: boolean,
+  awardType: 'MOVIE' | 'CAST' | 'CREW',
 };
 
-export default function Nominee({ nominee, onClick, isSelected }: NomineeProps) {
+export default function Nominee({
+  nominee, onClick, isSelected, awardType,
+}: NomineeProps) {
   const { messages } = useMessages();
+
+  const hasSubheader: boolean = (nominee.movieTitle !== nominee.frenchMovieTitle)
+    || (awardType === 'CREW')
+    || (awardType === 'CAST');
 
   return (
     <div className={`nominee ${isSelected ? 'selected' : ''}`}>
       <Card>
         <CardHeader
-          title={nominee.movieTitle}
+          title={awardType === 'MOVIE' ? nominee.movieTitle : nominee.personName}
           subheader={
-            (nominee.movieTitle !== nominee.frenchMovieTitle)
+            hasSubheader
               ? (
                 <div className="nominee-alt-title">({nominee.frenchMovieTitle})</div>
               )
@@ -33,11 +40,23 @@ export default function Nominee({ nominee, onClick, isSelected }: NomineeProps) 
           }
         />
         <CardContent>
+          <div className="nominee-images">
           <CardMedia
             component="img"
+            className={(awardType === 'CAST') ? 'secondary-image' : 'main-image'}
             alt={nominee.movieTitle}
             image={nominee.movieMediaUrl}
           />
+          {
+            (awardType === 'CAST')
+            && <CardMedia
+              component="img"
+              className="main-image"
+              alt={nominee.personName}
+              image={nominee.personMediaUrl}
+            />
+          }
+          </div>
         </CardContent>
         <CardActions>
           <ActionsContainer>

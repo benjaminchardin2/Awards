@@ -57,6 +57,7 @@ export default function AwardsBigScreen({
                             nominee={nominee}
                             isSelected={userPicks[award.awardId]?.nomineeId === nominee.nomineeId}
                             onClick={() => onPronosticChoice(award, nominee.nomineeId)}
+                            awardType={award.type}
                           />
                         ))
                     }

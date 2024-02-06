@@ -3,6 +3,8 @@ import { useObservable } from 'micro-observables';
 import { getGlobalInstance } from 'plume-ts-di';
 import React, { useState } from 'react';
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
+import Fab from '@mui/material/Fab';
+import ShareIcon from '@mui/icons-material/Share';
 import CeremonyApi, { AwardWithNominees, PronosticChoice } from '../../../api/ceremony/CeremonyApi';
 import useLoader, { LoaderState } from '../../../lib/plume-http-react-hook-loader/promiseLoaderHook';
 import { useOnComponentMounted, useOnDependenciesChange } from '../../../lib/react-hooks-alias/ReactHooksAlias';
@@ -10,6 +12,8 @@ import CeremonyPicksService from '../../../services/ceremony/CeremonyPicksServic
 import SessionService from '../../../services/session/SessionService';
 import { HOME } from '../../Routes';
 import Awards from './award/Awards';
+import ShareModal from './share/ShareModal';
+import useToggle from '../../../lib/react-hook-toggle/ReactHookToggle';
 
 export default function Ceremony() {
   const { id } = useParams();
@@ -20,6 +24,8 @@ export default function Ceremony() {
   const sessionService: SessionService = getGlobalInstance(SessionService);
   const [awards, setAwards] = useState<AwardWithNominees[] | undefined>(undefined);
   const [userPicks, setUserPicks] = useState<{ [key: string]: PronosticChoice }>({});
+  const [shareLink, setShareLink] = useState<string>();
+  const [open, toggle] = useToggle(false);
   const loader: LoaderState = useLoader();
   const isAuthenticated: boolean = useObservable(sessionService.isAuthenticated());
 
@@ -58,14 +64,37 @@ export default function Ceremony() {
       });
   };
 
+  const getShareLink = () => {
+    ceremonyPicksService
+      .getShareLink(numberId, isAuthenticated)
+      .then((code: string) => {
+        setShareLink(code);
+        toggle();
+      });
+  };
+
   return (
     <div className="ceremony">
       {(loader.isLoaded && awards)
-        ? <Awards
-          awards={awards}
-          userPicks={userPicks}
-          updateAwardPronosticChoice={updateAwardPronosticChoice}
-        /> : (
+        ? (
+          <>
+            <Awards
+              awards={awards}
+              userPicks={userPicks}
+              updateAwardPronosticChoice={updateAwardPronosticChoice}
+            />
+            <div className="sticky-button">
+              <Fab size="medium" onClick={getShareLink} disabled={Object.values(userPicks).length === 0}>
+                <ShareIcon/>
+              </Fab>
+            </div>
+            <ShareModal
+              open={open}
+              shareLink={shareLink!}
+              toggle={toggle}
+            />
+          </>
+        ) : (
           <CircularProgress/>
         )}
     </div>

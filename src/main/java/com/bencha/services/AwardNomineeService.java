@@ -2,18 +2,24 @@ package com.bencha.services;
 
 import com.bencha.db.dao.AwardNomineeDao;
 import com.bencha.db.generated.AwardNominee;
+import com.bencha.db.generated.Pronostic;
 import com.bencha.enums.AwardsType;
-import com.bencha.services.tmdb.*;
+import com.bencha.services.tmdb.PersonWithArtwork;
+import com.bencha.services.tmdb.TmdbConfigurationService;
+import com.bencha.services.tmdb.TmdbMovieService;
+import com.bencha.services.tmdb.TmdbPeopleService;
 import com.bencha.webservices.beans.Nominee;
-import info.movito.themoviedbapi.model.Artwork;
+import com.bencha.webservices.beans.PronosticChoice;
 import info.movito.themoviedbapi.model.MovieDb;
-import info.movito.themoviedbapi.model.people.PersonPeople;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -23,8 +29,6 @@ public class AwardNomineeService {
     private final AwardNomineeDao awardNomineeDao;
     private final TmdbMovieService tmdbMovieService;
     private final TmdbPeopleService tmdbPeopleService;
-    private final TmdbCacheService tmdbCacheService;
-
     private final TmdbConfigurationService tmdbConfigurationService;
 
     @Inject
@@ -32,14 +36,12 @@ public class AwardNomineeService {
         AwardNomineeDao awardNomineeDao,
         TmdbMovieService tmdbMovieService,
         TmdbConfigurationService tmdbConfigurationService,
-        TmdbPeopleService tmdbPeopleService,
-        TmdbCacheService tmdbCacheService
+        TmdbPeopleService tmdbPeopleService
     ) {
         this.awardNomineeDao = awardNomineeDao;
         this.tmdbMovieService = tmdbMovieService;
         this.tmdbPeopleService = tmdbPeopleService;
         this.tmdbConfigurationService = tmdbConfigurationService;
-        this.tmdbCacheService = tmdbCacheService;
     }
 
     public List<AwardNominee> findAwardsNominees(List<Long> awardIds) {
@@ -53,13 +55,7 @@ public class AwardNomineeService {
             .collect(Collectors.toSet());
         return movieIds
             .parallelStream()
-            .map(id -> tmdbCacheService
-                .getMovieInCache(String.valueOf(id))
-                .orElseGet(() -> {
-                    logger.debug("Movie {} not found in cache retrieving it", id);
-                    return tmdbMovieService.getMovieById(id);
-                })
-            )
+            .map(tmdbMovieService::getMovieById)
             .collect(Collectors.toMap(
                 movie -> Long.valueOf(movie.getId()),
                 Function.identity()
@@ -83,19 +79,7 @@ public class AwardNomineeService {
             );
         return personIds
             .parallelStream()
-            .map(id -> tmdbCacheService
-                .getPersonInCache(String.valueOf(id))
-                .orElseGet(() -> {
-                    logger.debug("Person {} not found in cache retrieving it", id);
-                    PersonPeople people = tmdbPeopleService.getPeopleById(id);
-                    Optional<Artwork> artwork = shouldFetchArtwork.get(id) ? tmdbPeopleService.getPeopleImage(id) : Optional.empty();
-                    return PersonWithArtwork
-                        .of(
-                            id,
-                            artwork,
-                            people
-                        );
-                }))
+            .map(id -> tmdbPeopleService.getPersonWithArtworkById(id, shouldFetchArtwork.get(id)))
             .collect(Collectors.toMap(
                 PersonWithArtwork::getPersonId,
                 Function.identity()
@@ -117,6 +101,50 @@ public class AwardNomineeService {
             })
             .toList();
     }
+    public PronosticChoice pronosticToPronosticChoice(Pronostic pronostic) {
+        PronosticChoice pronosticChoice = new PronosticChoice();
+        pronosticChoice.setNomineeId(pronostic.getNomineeId());
+        pronosticChoice.setAwardId(pronostic.getAwardId());
+        if (pronostic.getNomineeId() == null) {
+            Nominee nomineeDto = new Nominee();
+            if (pronostic.getTdmbMovieId() != null) {
+                MovieDb movieDb = tmdbMovieService.getMovieById(pronostic.getTdmbMovieId());
+                nomineeDto.setNomineeId(null);
+                nomineeDto.setMovieTitle(movieDb.getOriginalTitle());
+                nomineeDto.setFrenchMovieTitle(movieDb.getTitle());
+                nomineeDto.setTmdbMovieId(movieDb.getId());
+                nomineeDto.setMovieMediaUrl(tmdbConfigurationService.buildMediaUrl(movieDb.getPosterPath()));
+            }
+            pronosticChoice.setNominee(nomineeDto);
+        }
+        return pronosticChoice;
+    }
+
+    public Nominee pronosticToNominee(Pronostic pronostic, AwardNominee nominee, AwardsType awardsType) {
+        Nominee nomineeDto = new Nominee();
+        if (pronostic.getNomineeId() == null) {
+            if (pronostic.getTdmbMovieId() != null) {
+                MovieDb movieDb = tmdbMovieService.getMovieById(pronostic.getTdmbMovieId());
+                nomineeDto.setNomineeId(null);
+                nomineeDto.setMovieTitle(movieDb.getOriginalTitle());
+                nomineeDto.setFrenchMovieTitle(movieDb.getTitle());
+                nomineeDto.setTmdbMovieId(movieDb.getId());
+                nomineeDto.setMovieMediaUrl(tmdbConfigurationService.buildMediaUrl(movieDb.getPosterPath()));
+            }
+        } else {
+            MovieDb movieDb = tmdbMovieService.getMovieById(nominee.getTdmbMovieId());
+            buildNomineeMovie(nominee, movieDb, nomineeDto);
+            if (AwardsType.CREW.equals(awardsType) || AwardsType.CAST.equals(awardsType)) {
+                PersonWithArtwork personWithArtwork = tmdbPeopleService.getPersonWithArtworkById(nominee.getTdmbPersonId(), AwardsType.CAST.equals(awardsType));
+                nomineeDto.setPersonName(personWithArtwork.getPerson().getName());
+                nomineeDto.setTmdbPersonId(personWithArtwork.getPersonId().intValue());
+                if (personWithArtwork.getArtwork().isPresent()) {
+                    nomineeDto.setPersonMediaUrl(tmdbConfigurationService.buildMediaUrl(personWithArtwork.getArtwork().get().getFilePath()));
+                }
+            }
+        }
+        return nomineeDto;
+    }
 
     public List<Nominee> findAwardCrewNomineesDto(List<AwardNominee> awardNominees, Map<Long, MovieDb> movies, Map<Long, PersonWithArtwork> persons) {
         return awardNominees.stream()
@@ -124,7 +152,11 @@ public class AwardNomineeService {
                 MovieDb movieDb = movies.get(nominee.getTdmbMovieId());
                 PersonWithArtwork personWithArtwork = persons.get(nominee.getTdmbPersonId());
                 Nominee nomineeDto = new Nominee();
-                nomineeDto.setPersonName(personWithArtwork.getPerson().getName());
+                if (nominee.getNameOverride() != null) {
+                    nomineeDto.setPersonName(nominee.getNameOverride());
+                } else {
+                    nomineeDto.setPersonName(personWithArtwork.getPerson().getName());
+                }
                 return buildNomineeMovie(nominee, movieDb, nomineeDto);
             })
             .toList();
@@ -156,11 +188,7 @@ public class AwardNomineeService {
             .stream()
             .map(AwardNominee::getTdmbMovieId)
             .collect(Collectors.toSet());
-        movieIds
-            .forEach(id -> {
-                MovieDb movieDb = tmdbMovieService.getMovieById(id);
-                tmdbCacheService.putMovieInCache(String.valueOf(movieDb.getId()), movieDb);
-            });
+        this.tmdbMovieService.loadMoviesInCache(movieIds);
     }
 
     public void loadPersonsInCache(List<AwardNominee> awardNominees, Map<Long, AwardsType> awardsTypeMap) {
@@ -178,17 +206,6 @@ public class AwardNomineeService {
                     (a, b) -> Boolean.TRUE.equals(a) ? a : b
                 )
             );
-        personIds
-            .forEach(id -> {
-                PersonPeople people = tmdbPeopleService.getPeopleById(id);
-                Optional<Artwork> artwork = shouldFetchArtwork.get(id) ? tmdbPeopleService.getPeopleImage(id) : Optional.empty();
-                PersonWithArtwork personWithArtwork = PersonWithArtwork
-                    .of(
-                        id,
-                        artwork,
-                        people
-                    );
-                tmdbCacheService.putPersonInCache(String.valueOf(people.getId()), personWithArtwork);
-            });
+        this.tmdbPeopleService.loadPersonsInCache(personIds, shouldFetchArtwork);
     }
 }
