@@ -1,0 +1,72 @@
+@use "../variables" as *;
+
+.share {
+  padding: $spacer-4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  .share-list {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    .MuiImageList-root {
+      .share-images {
+        display: flex;
+        flex-direction: column;
+        max-width: 160px;
+        position: relative;
+
+        .award-tile {
+          display: flex;
+          flex-direction: column;
+          background: $golden-gradient;
+          padding: 2px;
+          border-radius: 5px;
+
+          .award-tile-content {
+            display: flex;
+            flex-direction: column;
+
+            img {
+              border-bottom-right-radius: 3px;
+              border-bottom-left-radius: 3px;
+            }
+
+            .award-title {
+              border-top-right-radius: 3px;
+              border-top-left-radius: 3px;
+              padding: $spacer-2;
+              display: flex;
+              justify-content: center;
+              background-color: $black;
+
+              .MuiTypography-root {
+                background: $golden-gradient;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+              }
+            }
+          }
+        }
+
+        img {
+          height: auto;
+        }
+
+        .secondary-image {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          max-width: 50px;
+        }
+      }
+
+      .MuiImageListItemBar-title {
+        font-size: $font-size-normal;
+        font-weight: bold;
+      }
+    }
+  }
+}

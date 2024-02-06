@@ -6,7 +6,7 @@ import com.querydsl.sql.Column;
 import javax.annotation.processing.Generated;
 
 /**
- * Awards is a Querydsl bean type
+ * Award is a Querydsl bean type
  */
 @Generated("com.coreoz.plume.db.querydsl.generation.IdBeanSerializer")
 public class Award extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
@@ -59,7 +59,7 @@ public class Award extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl 
 
     @Override
     public String toString() {
-        return "Awards#" + id;
+        return "Award#" + id;
     }
 
     @Override

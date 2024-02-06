@@ -3,6 +3,7 @@ package com.bencha.db.generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.sql.ColumnMetadata;
 
 import javax.annotation.processing.Generated;
@@ -26,6 +27,8 @@ public class QUserParticipation extends com.querydsl.sql.RelationalPathBase<User
     public final NumberPath<Long> ceremonyId = createNumber("ceremonyId", Long.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final StringPath shareCode = createString("shareCode");
 
     public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
@@ -63,9 +66,10 @@ public class QUserParticipation extends com.querydsl.sql.RelationalPathBase<User
     }
 
     public void addMetadata() {
-        addMetadata(ceremonyId, ColumnMetadata.named("ceremony_id").withIndex(3).ofType(Types.BIGINT).withSize(19).notNull());
+        addMetadata(ceremonyId, ColumnMetadata.named("ceremony_id").withIndex(4).ofType(Types.BIGINT).withSize(19).notNull());
         addMetadata(id, ColumnMetadata.named("id").withIndex(1).ofType(Types.BIGINT).withSize(19).notNull());
-        addMetadata(userId, ColumnMetadata.named("user_id").withIndex(2).ofType(Types.BIGINT).withSize(19).notNull());
+        addMetadata(shareCode, ColumnMetadata.named("share_code").withIndex(3).ofType(Types.VARCHAR).withSize(255));
+        addMetadata(userId, ColumnMetadata.named("user_id").withIndex(2).ofType(Types.BIGINT).withSize(19));
     }
 
 }

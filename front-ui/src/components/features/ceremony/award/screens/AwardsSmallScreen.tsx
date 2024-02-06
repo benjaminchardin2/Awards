@@ -77,6 +77,7 @@ export default function AwardsSmallScreen({
                           nominee={nominee}
                           isSelected={userPicks[award.awardId]?.nomineeId === nominee.nomineeId}
                           onClick={() => onPronosticChoice(award, nominee.nomineeId)}
+                          awardType={award.type}
                         />
                       </Slider>
                     ))

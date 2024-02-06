@@ -9,4 +9,6 @@ export const CHANGE_PASSWORD: string = '/change-password';
 export const RESET_PASSWORD: string = '/reset-password';
 export const ACCOUNT_DELETED: string = '/account-deleted';
 export const CEREMONY: string = '/ceremony';
+export const SHARE: string = '/share';
 export const CEREMONY_PAGE: string = `${CEREMONY}/:id`;
+export const SHARE_PAGE: string = `${SHARE}/:shareCode`;

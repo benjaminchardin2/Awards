@@ -1,9 +1,12 @@
 package com.bencha.db.dao;
 
 import com.bencha.db.generated.Pronostic;
+import com.bencha.db.generated.QAward;
+import com.bencha.db.generated.QAwardNominee;
 import com.bencha.db.generated.QPronostic;
 import com.coreoz.plume.db.querydsl.crud.CrudDaoQuerydsl;
 import com.coreoz.plume.db.querydsl.transaction.TransactionManagerQuerydsl;
+import com.querydsl.core.Tuple;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,6 +36,22 @@ public class PronosticDao extends CrudDaoQuerydsl<Pronostic> {
             .selectQuery()
             .select(QPronostic.pronostic)
             .from(QPronostic.pronostic)
+            .where(
+                QPronostic.pronostic.userParticipationId
+                    .eq(userParticipationId)
+            )
+            .fetch();
+    }
+
+    public List<Tuple> findUserPronosticsWithNomineeAndAwardForParticipation(Long userParticipationId) {
+        return transactionManager
+            .selectQuery()
+            .select(QPronostic.pronostic, QAwardNominee.awardNominee, QAward.award)
+            .from(QPronostic.pronostic)
+            .join(QAward.award)
+            .on(QAward.award.id.eq(QPronostic.pronostic.awardId))
+            .leftJoin(QAwardNominee.awardNominee)
+            .on(QAwardNominee.awardNominee.id.eq(QPronostic.pronostic.nomineeId))
             .where(
                 QPronostic.pronostic.userParticipationId
                     .eq(userParticipationId)

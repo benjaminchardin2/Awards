@@ -26,6 +26,10 @@ const frMessages: Translations = {
     confirm_password: 'Confirmez votre mot de passe pour continuer',
     account_will_be_deleted: 'Votre compte sera supprimé',
     select: 'Sélectionner',
+    share: 'Partager',
+    copied: 'Copié',
+    make_own_pronostics: 'Faire vos propres pronostics',
+    go_home: 'Retourner à l\'accueil',
   },
   // common labels
   label: {
@@ -140,6 +144,7 @@ const frMessages: Translations = {
     CANNOT_AUTHENTICATE_THROUGH_GOOGLE: 'L\'authentification via Google est indisponible',
     RECAPTCHA_ERROR: 'Le captcha est invalide, veuillez réessayer',
     INVALID_PASSWORD: 'Mot de passe incorrect',
+    SHARE_NOT_FOUND: 'Impossible de trouver le contenu partagé correspondant à ce lien',
   },
   google: {
     recaptcha: 'Cochez la case "Je ne suis pas un robot"',
@@ -147,6 +152,14 @@ const frMessages: Translations = {
   ceremony: {
     selected: 'Sélectionné',
     yourChoice: (title: string | undefined) => (title ? `Choix actuel : ${title}` : 'Aucun choix'),
+  },
+  'share-modal': {
+    title: 'Partagez vos choix !',
+    description: 'Contient le lien pour partager vos choix',
+    content_not_connected: 'Ce lien permet de partager vos résultats. \nIl prendra en compte, vos changements'
+      + ' au cours de cette session',
+    content_connected: 'Ce lien permet de partager vos résultats. \nIl prendra en compte, vos changements'
+      + ' tant que vous êtes connecté',
   },
 } as const;
 

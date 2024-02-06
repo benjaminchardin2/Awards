@@ -19,6 +19,7 @@ import {
   REGISTER,
   RESET_PASSWORD,
   RGPD,
+  SHARE_PAGE,
   VERIFY_EMAIL,
 } from '../Routes';
 import Footer from './Footer';
@@ -28,6 +29,7 @@ import SessionService from '../../services/session/SessionService';
 import Profile from '../features/profile/Profile';
 import DeletedAccount from '../features/deleted-account/DeletedAccount';
 import Ceremony from '../features/ceremony/Ceremony';
+import Share from '../features/share/Share';
 
 export default function Router() {
   const sessionService: SessionService = getGlobalInstance(SessionService);
@@ -53,6 +55,7 @@ export default function Router() {
               </ConditionalRoute>
             )} />
             <Route path={CEREMONY_PAGE} element={<Ceremony />} />
+            <Route path={SHARE_PAGE} element={<Share />} />
             <Route path="*" element={<Navigate to={{ pathname: HOME }} />} />
           </Routes>
         </div>

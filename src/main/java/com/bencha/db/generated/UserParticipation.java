@@ -19,6 +19,9 @@ public class UserParticipation extends com.coreoz.plume.db.querydsl.crud.CrudEnt
     @Column("id")
     private Long id;
 
+    @Column("share_code")
+    private String shareCode;
+
     @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("user_id")
     private Long userId;
@@ -37,6 +40,14 @@ public class UserParticipation extends com.coreoz.plume.db.querydsl.crud.CrudEnt
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getShareCode() {
+        return shareCode;
+    }
+
+    public void setShareCode(String shareCode) {
+        this.shareCode = shareCode;
     }
 
     public Long getUserId() {

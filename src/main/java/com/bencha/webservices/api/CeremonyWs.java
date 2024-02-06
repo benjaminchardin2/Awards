@@ -77,6 +77,36 @@ public class CeremonyWs {
     @Path("/{id}/pronostics")
     @Operation(description = "Get the top two ceremonies highlighted")
     public void saveCeremonyPronostic(@PathParam("id") Long ceremonyId, @Context WebSessionAdmin webSessionAdmin, PronosticChoice pronosticChoice) {
-        pronosticService.saveUserChoice(webSessionAdmin.getIdUser(), ceremonyId, pronosticChoice);
+        if (webSessionAdmin != null) {
+            pronosticService.saveUserChoice(webSessionAdmin.getIdUser(), ceremonyId, pronosticChoice);
+        } else {
+            pronosticService.saveAnonymousChoice(pronosticChoice);
+        }
+    }
+
+    @POST
+    @Path("/{id}/pronostics/link")
+    @Operation(description = "Link pronostics to user")
+    public void linkPronosticsToUser(@PathParam("id") Long ceremonyId, @Context WebSessionAdmin webSessionAdmin, List<PronosticChoice> pronosticChoices) {
+        pronosticService.linkPronosticsToUser(ceremonyId, webSessionAdmin.getIdUser(), pronosticChoices);
+    }
+
+    @POST
+    @Path("/{id}/anonymous-pronostics")
+    @Operation(description = "Save pronostics")
+    public SerializedId saveAnonymousPronostics(@PathParam("id") Long ceremonyId, List<PronosticChoice> pronosticChoices) {
+        return SerializedId.of(pronosticService.createAnonymousParticipation(ceremonyId, pronosticChoices));
+    }
+
+    @POST
+    @Path("/{id}/share-link")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Operation(description = "Get the share link")
+    public String getPronosticsShareLink(@PathParam("id") Long ceremonyId, @Context WebSessionAdmin webSessionAdmin, Long participationId) {
+        if (webSessionAdmin != null) {
+            return pronosticService.getPronosticsShareLink(webSessionAdmin.getIdUser(), ceremonyId);
+        } else {
+            return pronosticService.getPronosticsShareLink(participationId);
+        }
     }
 }
