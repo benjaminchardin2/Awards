@@ -8,6 +8,13 @@
   align-items: center;
   height: 100%;
 
+  .loader {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
   .sticky-button {
     display: flex;
     width:max-content;
@@ -97,6 +104,7 @@
 
   .nominee {
     flex-grow: 1;
+    display: flex;
 
     &.selected {
       background: $golden-gradient;
@@ -114,8 +122,12 @@
 
     .MuiCard-root {
       background-color: white;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
 
       .MuiCardHeader-root {
+        flex-grow: 1;
         padding: $spacer-3 $spacer-4;
         background-color: $black;
         color: white;
@@ -146,6 +158,7 @@
         }
 
         img {
+          aspect-ratio: 2/3;
           height: auto;
         }
       }
@@ -183,11 +196,12 @@
 
 @media screen and (max-width: 1200px) {
   .ceremony {
-    margin: 0;
+    padding: 0;
 
     .sticky-button {
-      position: absolute;
+      position: fixed;
       right: 0;
+      margin-bottom: 50px;
       width: unset;
       margin-left: unset;
     }

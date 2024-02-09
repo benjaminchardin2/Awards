@@ -65,6 +65,7 @@ export default function Share() {
       {(loader.isLoaded && ceremonyShare)
         ? (
           <>
+            <Typography component="h5" variant="h5">{ceremonyShare.ceremonyTitle}</Typography>
             <div className="share-list">
             {ceremonyShare.awardShares && (
               <ImageList cols={isMobile ? 2 : 4} gap={isMobile ? 10 : 50}>

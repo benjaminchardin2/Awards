@@ -1,5 +1,6 @@
 package com.bencha.db;
 
+import com.bencha.services.configuration.ConfigurationService;
 import org.flywaydb.core.Flyway;
 
 import javax.inject.Inject;
@@ -13,15 +14,18 @@ import javax.sql.DataSource;
 public class DatabaseInitializer {
 
 	private final DataSource dataSource;
+    private final String locationMigration;
 
 	@Inject
-	public DatabaseInitializer(DataSource dataSource) {
+	public DatabaseInitializer(DataSource dataSource, ConfigurationService configurationService) {
 		this.dataSource = dataSource;
+        this.locationMigration = configurationService.getMigrationFolder();
 	}
 
 	public void setup() {
 		Flyway
 			.configure()
+            .locations(locationMigration)
 			.dataSource(dataSource)
 			.outOfOrder(true)
 			.load()

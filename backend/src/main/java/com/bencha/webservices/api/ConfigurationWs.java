@@ -2,6 +2,7 @@ package com.bencha.webservices.api;
 
 import com.bencha.services.LegalService;
 import com.bencha.services.configuration.ConfigurationService;
+import com.bencha.webservices.beans.FrontendConfiguration;
 import com.bencha.webservices.beans.GoogleConfiguration;
 import com.coreoz.plume.jersey.security.permission.PublicApi;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,5 +39,11 @@ public class ConfigurationWs {
         googleConfiguration.setClientId(configurationService.getGoogleClientId());
         googleConfiguration.setReCaptchaPublicKey(configurationService.getGoogleReCaptchaPublicKey());
         return googleConfiguration;
+    }
+
+    @GET
+    @Operation(description = "Get the configuration")
+    public FrontendConfiguration getFrontendConfiguration() {
+        return configurationService.getFrontendConfiguration();
     }
 }

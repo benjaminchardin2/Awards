@@ -1,5 +1,6 @@
 package com.bencha.services.configuration;
 
+import com.bencha.webservices.beans.FrontendConfiguration;
 import com.typesafe.config.Config;
 
 import javax.inject.Inject;
@@ -63,4 +64,14 @@ public class ConfigurationService {
     public String getGoogleReCaptchaPrivateKey() { return config.getString("google.recaptcha.private"); }
     public String getGoogleReCaptchaVerificationBaseUrl() { return config.getString("google.recaptcha.verify.url"); }
     public String getTmdbApiKey() { return config.getString("tmdb.api.key"); }
+
+    public String getMigrationFolder() { return config.getString("flyway.migration.folder"); }
+
+    private Boolean getIsAccountEnabled() { return config.getBoolean("account.enabled"); }
+
+    public FrontendConfiguration getFrontendConfiguration() {
+        return FrontendConfiguration.of(
+            getIsAccountEnabled()
+        );
+    }
 }

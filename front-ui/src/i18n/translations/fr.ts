@@ -3,7 +3,7 @@ import { Translations } from './Translations';
 
 const frMessages: Translations = {
   app: {
-    name: 'Rank-It',
+    name: 'The Winner Is',
   },
   // actions
   action: {
