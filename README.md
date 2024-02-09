@@ -7,10 +7,10 @@ This is a project website to allows user to make pronostics on movie awards cere
 
 Backend
 ------------
-Built with Plume a wonderful java framework :
+Built with Plume a wonderful Java framework :
 https://github.com/Coreoz/Plume
 
 Frontend
 ------------
-Built with the base Plume react artifact :
+Built with the base Plume React artifact :
 https://github.com/Coreoz/create-plume-react-project

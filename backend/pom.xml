@@ -124,6 +124,11 @@
 		 	<artifactId>mysql-connector-j</artifactId>
 		 	<version>8.1.0</version>
 		 </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version>
+        </dependency>
         <!-- Uncomment to use flyway -->
         <dependency>
             <groupId>org.flywaydb</groupId>
@@ -132,6 +137,11 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>10.7.1</version>
         </dependency>
 
 		<!-- jersey -->

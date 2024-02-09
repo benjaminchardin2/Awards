@@ -40,7 +40,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build & test with Maven
-        run: mvn -B clean test
+        run: cd backend && mvn -B clean test
 #      - name: Sonar analysis
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
