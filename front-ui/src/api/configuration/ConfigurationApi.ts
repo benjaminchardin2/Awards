@@ -6,6 +6,10 @@ export type GoogleConfiguration = {
   clientId: string,
 };
 
+export type FrontendConfiguration = {
+  isAccountEnabled: boolean,
+};
+
 export default class ConfigurationApi {
   constructor(private readonly httpClient: ApiHttpClient) {
   }
@@ -14,6 +18,13 @@ export default class ConfigurationApi {
     return this
       .httpClient
       .restRequest<GoogleConfiguration>(HttpMethod.GET, '/configuration/google')
+      .execute();
+  }
+
+  getFrontendConfiguration() {
+    return this
+      .httpClient
+      .restRequest<FrontendConfiguration>(HttpMethod.GET, '/configuration')
       .execute();
   }
 }

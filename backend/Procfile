@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -cp target/classes:target/dist/Awards/lib/* -Dhttp.port=$PORT com.bencha.WebApplication

@@ -33,7 +33,7 @@ public class EmailService {
                 Email email = EmailBuilder
                     .startingBlank()
                     .to(toEmail)
-                    .withSubject("Création de votre compte Rank-It")
+                    .withSubject("Création de votre compte The Winner Is")
                     .withHTMLText(verificationLinkFinal)
                     .buildEmail();
                 mailer.sendMail(email, true);
@@ -54,7 +54,7 @@ public class EmailService {
                 Email email = EmailBuilder
                     .startingBlank()
                     .to(toEmail)
-                    .withSubject("Demande de modification de mot de passe Rank-it")
+                    .withSubject("Demande de modification de mot de passe The Winner Is")
                     .withHTMLText(verificationLinkFinal)
                     .buildEmail();
                 mailer.sendMail(email, true);

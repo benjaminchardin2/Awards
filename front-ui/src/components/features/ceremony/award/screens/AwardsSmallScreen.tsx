@@ -68,7 +68,7 @@ export default function AwardsSmallScreen({
                   award.nominees
                     .map((nominee: NomineeType) => (
                       <Slider
-                        key={`${award.awardId}|${nominee.tmdbMovieId}|${nominee.tmdbPersonId}`}
+                        key={`${award.awardId}|${nominee.tmdbMovieId}|${nominee.tmdbPersonId || nominee.personName}`}
                         next={nomineeSwipeableIndex.onNext}
                         previous={nomineeSwipeableIndex.onPrevious}
                         style='chevron'

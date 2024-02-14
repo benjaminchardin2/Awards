@@ -95,7 +95,9 @@ export default function Ceremony() {
             />
           </>
         ) : (
-          <CircularProgress/>
+          <div className="loader">
+            <CircularProgress/>
+          </div>
         )}
     </div>
   );

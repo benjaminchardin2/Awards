@@ -135,11 +135,15 @@ public class AwardNomineeService {
             MovieDb movieDb = tmdbMovieService.getMovieById(nominee.getTdmbMovieId());
             buildNomineeMovie(nominee, movieDb, nomineeDto);
             if (AwardsType.CREW.equals(awardsType) || AwardsType.CAST.equals(awardsType)) {
-                PersonWithArtwork personWithArtwork = tmdbPeopleService.getPersonWithArtworkById(nominee.getTdmbPersonId(), AwardsType.CAST.equals(awardsType));
-                nomineeDto.setPersonName(personWithArtwork.getPerson().getName());
-                nomineeDto.setTmdbPersonId(personWithArtwork.getPersonId().intValue());
-                if (personWithArtwork.getArtwork().isPresent()) {
-                    nomineeDto.setPersonMediaUrl(tmdbConfigurationService.buildMediaUrl(personWithArtwork.getArtwork().get().getFilePath()));
+                if (nominee.getTdmbPersonId() != null) {
+                    PersonWithArtwork personWithArtwork = tmdbPeopleService.getPersonWithArtworkById(nominee.getTdmbPersonId(), AwardsType.CAST.equals(awardsType));
+                    nomineeDto.setPersonName(personWithArtwork.getPerson().getName());
+                    nomineeDto.setTmdbPersonId(personWithArtwork.getPersonId().intValue());
+                    if (personWithArtwork.getArtwork().isPresent()) {
+                        nomineeDto.setPersonMediaUrl(tmdbConfigurationService.buildMediaUrl(personWithArtwork.getArtwork().get().getFilePath()));
+                    }
+                } else {
+                    nomineeDto.setPersonName(nominee.getNameOverride());
                 }
             }
         }
