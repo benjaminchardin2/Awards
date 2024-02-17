@@ -11,8 +11,8 @@ import javax.annotation.processing.Generated;
 @Generated("com.coreoz.plume.db.querydsl.generation.IdBeanSerializer")
 public class AwardCondition extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("award_id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long awardId;
 
     @Column("condition_name")
@@ -21,8 +21,8 @@ public class AwardCondition extends com.coreoz.plume.db.querydsl.crud.CrudEntity
     @Column("condition_type")
     private String conditionType;
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long id;
 
     @Column("value")

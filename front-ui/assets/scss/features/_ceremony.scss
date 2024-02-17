@@ -71,17 +71,26 @@
           .MuiSvgIcon-root {
             font-size: 60px;
           }
+
+          .MuiTypography-root {
+            font-weight: 0;
+          }
         }
 
         .award-pick-preview {
           margin-right: $spacer-8;
           display: flex;
           align-items: center;
-          text-decoration: underline;
 
           .MuiTypography-root {
-            h4 {
+            &.title {
+              font-weight: bold;
+              text-decoration: underline;
+            }
+            &.subtitle {
               font-weight: normal;
+              text-decoration: none;
+              margin-left: $spacer-4;
             }
           }
         }
@@ -96,15 +105,27 @@
       .nominee-row {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: $spacer-6;
+      }
+
+      .MuiAccordionDetails-root {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .MuiButton-text {
+          color: $black;
+          text-decoration: underline;
+        }
       }
     }
   }
 
   .nominee {
-    flex-grow: 1;
     display: flex;
+    flex-basis: 15%;
 
     &.selected {
       background: $golden-gradient;
@@ -113,6 +134,29 @@
 
       .MuiCard-root {
         box-shadow: unset;
+      }
+    }
+
+    &.search {
+
+      .search-nominee {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: $spacer-2;
+
+        .MuiList-root {
+          overflow: auto;
+          max-height: 300px;
+          margin-bottom: $spacer-2;
+        }
+      }
+
+      .MuiCard-root {
+        .MuiCardHeader-root {
+          flex-grow: unset;
+        }
       }
     }
 
@@ -128,13 +172,14 @@
 
       .MuiCardHeader-root {
         flex-grow: 1;
-        padding: $spacer-3 $spacer-4;
+        padding: $spacer-2 $spacer-4;
         background-color: $black;
         color: white;
         text-align: center;
 
         .MuiTypography-root {
           font-size: $font-size-medium;
+          line-height: $font-size-medium;
 
           .nominee-alt-title {
             color: white;
@@ -169,9 +214,17 @@
 
         .actions {
           width: 80%;
+          display: flex;
+          gap: $spacer-2;
+          flex-direction: column;
 
           .action-container {
             width: 100%;
+            margin: 0;
+
+            .MuiSvgIcon-root {
+              font-size: 20px;
+            }
 
             .MuiButtonBase-root {
               width: 100%;
@@ -180,13 +233,55 @@
         }
 
         .nominee-selected {
-          background-color: black;
+          background-color: $black;
           border-radius: 4px;
 
           .MuiButtonBase-root {
             background: $golden-gradient;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+          }
+        }
+
+        .favorite-selected {
+          .Mui-disabled {
+            color: $pink;
+            background-color: white;
+          }
+
+          .MuiButtonBase-root {
+            height: 35px;
+            background: white;
+          }
+        }
+
+        .favorite {
+          color: $black;
+          .MuiButtonBase-root {
+            height: 35px;
+            background: $pink;
+          }
+        }
+      }
+    }
+
+    .search {
+      .MuiToggleButtonGroup-root {
+        margin-bottom: $spacer-2;
+      }
+
+      .MuiCardContent-root {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        min-height: 300px;
+        .MuiAutocomplete-root {
+          width: 100%;
+          .MuiInputBase-root {
+            font-size: $min-no-zoom-font-size;
+          }
+          .MuiSvgIcon-root {
+            font-size: 20px;
           }
         }
       }
@@ -201,9 +296,16 @@
     .sticky-button {
       position: fixed;
       right: 0;
-      margin-bottom: 50px;
+      margin-bottom: $footer-size-mobile;
       width: unset;
       margin-left: unset;
+
+      .MuiButtonBase-root {
+        &.MuiFab-root {
+          margin-right: $spacer-2;
+          margin-bottom: $spacer-2;
+        }
+      }
     }
 
     .awards {
@@ -212,20 +314,37 @@
       flex-direction: column;
       max-width: 100vw;
       overflow-x: hidden;
+
+      .MuiButton-text {
+        color: $black;
+        text-decoration: underline;
+        height: 20px;
+        margin-bottom: $spacer-2;
+      }
     }
 
     .slider {
       .slider-content {
         .nominee {
-          margin: $spacer-4 0;
+          padding: $spacer-2 0;
           max-width: 350px;
+
+          &.search {
+            .MuiPaper-root {
+              height: fit-content;
+            }
+          }
         }
       }
     }
 
     .slider-header {
+      position: fixed;
+      background-color: white;
+      z-index: 2;
       border-bottom: 1px solid $primary-color;
-      min-height: 75px;
+      min-height: 50px;
+      padding-bottom: $spacer-2;
 
       .awards-slider {
         display: flex;
@@ -249,13 +368,15 @@
       flex-grow: 1;
       display: flex;
       align-items: center;
+      margin-top: $slider-header-size;
 
       .nominee-part {
         position: relative;
-        padding-bottom: $spacer-7;
+        padding-bottom: $spacer-3;
 
         .nominee {
           flex-grow: 1;
+          padding: 2px;
 
           &.selected {
             background: $golden-gradient;
@@ -283,6 +404,20 @@
             .MuiCardActions-root {
               .actions {
                 .action-container {
+
+                  &.favorite {
+                    .MuiButtonBase-root {
+                      height: 25px;
+                    }
+                  }
+
+                  &.favorite-selected {
+                    .MuiButtonBase-root {
+                      height: 25px;
+                      border-color: $pink;
+                    }
+                  }
+
                   .MuiButtonBase-root {
                     font-size: $font-size-littler;
                     padding: 0 $spacer-3;
@@ -295,16 +430,30 @@
         }
 
         .award-choice-indicator {
-          position: absolute;
+          margin-top: $spacer-2;
           display: flex;
           flex-direction: column;
           align-items: center;
-          bottom: 0;
+          justify-content: center;
           width: 100vw;
           text-align: center;
 
-          .MuiMobileStepper-dotActive {
-            background-color: $black;
+          .award-choice-text {
+            width: 80%;
+            display: flex;
+            justify-content: center;
+
+            .MuiTypography-subtitle1 {
+              line-height: 1.2rem;
+            }
+          }
+
+          .MuiMobileStepper-root {
+            padding: $spacer-1;
+
+            .MuiMobileStepper-dotActive {
+              background-color: $black;
+            }
           }
         }
       }
@@ -331,6 +480,8 @@
     .slider {
       .slider-content {
         .nominee {
+          height: 100%;
+
           .MuiCardHeader-content {
             .MuiTypography-h5 {
               font-size: $font-size-little;

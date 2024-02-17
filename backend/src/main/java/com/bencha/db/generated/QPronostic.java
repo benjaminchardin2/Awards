@@ -3,6 +3,7 @@ package com.bencha.db.generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.sql.ColumnMetadata;
 
 import javax.annotation.processing.Generated;
@@ -32,6 +33,8 @@ public class QPronostic extends com.querydsl.sql.RelationalPathBase<Pronostic> {
     public final NumberPath<Long> tdmbMovieId = createNumber("tdmbMovieId", Long.class);
 
     public final NumberPath<Long> tdmbPersonId = createNumber("tdmbPersonId", Long.class);
+
+    public final StringPath type = createString("type");
 
     public final NumberPath<Long> userParticipationId = createNumber("userParticipationId", Long.class);
 
@@ -74,6 +77,7 @@ public class QPronostic extends com.querydsl.sql.RelationalPathBase<Pronostic> {
         addMetadata(nomineeId, ColumnMetadata.named("nominee_id").withIndex(6).ofType(Types.BIGINT).withSize(19));
         addMetadata(tdmbMovieId, ColumnMetadata.named("tdmb_movie_id").withIndex(3).ofType(Types.BIGINT).withSize(19));
         addMetadata(tdmbPersonId, ColumnMetadata.named("tdmb_person_id").withIndex(4).ofType(Types.BIGINT).withSize(19));
+        addMetadata(type, ColumnMetadata.named("type").withIndex(7).ofType(Types.VARCHAR).withSize(255).notNull());
         addMetadata(userParticipationId, ColumnMetadata.named("user_participation_id").withIndex(2).ofType(Types.BIGINT).withSize(19).notNull());
     }
 

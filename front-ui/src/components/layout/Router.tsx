@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { getGlobalInstance } from 'plume-ts-di';
-import { useObservable } from 'micro-observables';
 import ChangePassword from '../features/login/ChangePassword';
 import Home from '../features/Home';
 import Legal from '../features/Legal';

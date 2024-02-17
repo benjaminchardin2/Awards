@@ -23,8 +23,8 @@ public class Ceremony extends com.coreoz.plume.db.querydsl.crud.CrudEntityQueryd
     @Column("has_nominees")
     private Boolean hasNominees;
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long id;
 
     @Column("is_highlighted")

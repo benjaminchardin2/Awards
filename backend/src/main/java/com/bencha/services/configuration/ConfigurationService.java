@@ -5,6 +5,8 @@ import com.typesafe.config.Config;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Singleton
 public class ConfigurationService {
@@ -71,7 +73,13 @@ public class ConfigurationService {
 
     public FrontendConfiguration getFrontendConfiguration() {
         return FrontendConfiguration.of(
-            getIsAccountEnabled()
+            getIsAccountEnabled(),
+            getLocalStorageResetDate()
         );
+    }
+
+    private LocalDateTime getLocalStorageResetDate() {
+        String localStorageDate = config.getString("local-storage.reset.date");
+        return LocalDateTime.parse(localStorageDate, DateTimeFormatter.ISO_DATE_TIME);
     }
 }

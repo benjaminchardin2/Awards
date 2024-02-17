@@ -14,5 +14,6 @@ import java.util.List;
 public class CeremonyShare {
     private String ceremonyTitle;
     private Long ceremonyId;
-    private List<AwardShare> awardShares;
+    private List<AwardShare> winnerAwardShares;
+    private List<AwardShare> favoriteAwardShares;
 }

@@ -14,8 +14,8 @@ public class Legal extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl 
     @Column("content")
     private String content;
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long id;
 
     @Column("page")

@@ -26,10 +26,14 @@ const frMessages: Translations = {
     confirm_password: 'Confirmez votre mot de passe pour continuer',
     account_will_be_deleted: 'Votre compte sera supprimé',
     select: 'Sélectionner',
+    favorite: 'Coup de coeur',
     share: 'Partager',
     copied: 'Copié',
     make_own_pronostics: 'Faire vos propres pronostics',
     go_home: 'Retourner à l\'accueil',
+    skip_choice: 'Passer ce choix',
+    delete_choice: 'Supprimer mon choix',
+    load_more: 'Voir plus',
   },
   // common labels
   label: {
@@ -151,7 +155,9 @@ const frMessages: Translations = {
   },
   ceremony: {
     selected: 'Sélectionné',
-    yourChoice: (title: string | undefined) => (title ? `Choix actuel : ${title}` : 'Aucun choix'),
+    favorite: 'Votre coup de coeur',
+    yourChoice: (title: string | undefined) => (title ? `Favori actuel : ${title}` : 'Aucun favori'),
+    yourFavorite: (title: string | undefined) => (title ? `Coup de coeur actuel : ${title}` : 'Aucun coup de coeur'),
   },
   'share-modal': {
     title: 'Partagez vos choix !',
@@ -160,6 +166,18 @@ const frMessages: Translations = {
       + ' au cours de cette session',
     content_connected: 'Ce lien permet de partager vos résultats. \nIl prendra en compte, vos changements'
       + ' tant que vous êtes connecté',
+  },
+
+  share: {
+    favorites: 'Coup de coeur',
+    winner: 'Favori',
+  },
+
+  search: {
+    favorite: 'Rechercher votre coup de coeur',
+    movies: 'Films',
+    persons: 'Personnes',
+    no_options: 'Aucun résultat'
   },
 } as const;
 

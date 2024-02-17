@@ -10,6 +10,7 @@ import PasswordApi from './reset-password/PasswordApi';
 import ConfigurationApi from './configuration/ConfigurationApi';
 import AccountApi from './session/AccountApi';
 import ShareApi from './share/ShareApi';
+import SearchApi from './search/SearchApi';
 
 export default function installApiModule(injector: Injector) {
   injector.registerSingleton(ApiHttpClient);
@@ -23,4 +24,5 @@ export default function installApiModule(injector: Injector) {
   injector.registerSingleton(ConfigurationApi);
   injector.registerSingleton(AccountApi);
   injector.registerSingleton(ShareApi);
+  injector.registerSingleton(SearchApi);
 }

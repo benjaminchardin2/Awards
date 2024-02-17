@@ -34,13 +34,24 @@ export type AwardWithNominees = {
 
 export type PronosticChoice = {
   participationId?: string,
-  nomineeId: number,
+  nomineeId?: number,
   awardId: number,
   nominee?: NomineeType,
+  type: 'WINNER' | 'FAVORITE',
+};
+
+export type AwardDeletion = {
+  participationId?: string,
+  awardId: string,
 };
 
 export type SeriliazedId = {
   id: string,
+};
+
+export type CeremonyPronostics = {
+  winnerPicks: { [key: string] : PronosticChoice },
+  favoritesPicks: { [key: string] : PronosticChoice },
 };
 
 export default class CeremonyApi {
@@ -67,7 +78,7 @@ export default class CeremonyApi {
   findCeremonyUserPronostics(ceremonyId: number) {
     return this
       .httpClientAuthenticated
-      .restRequest<{ [key: string] : PronosticChoice }>(HttpMethod.GET, `/ceremonies/${ceremonyId}/pronostics`)
+      .restRequest<CeremonyPronostics>(HttpMethod.GET, `/ceremonies/${ceremonyId}/pronostics`)
       .execute();
   }
 
@@ -79,15 +90,23 @@ export default class CeremonyApi {
       .execute();
   }
 
-  linkPronosticsToUser(ceremonyId: number, pronosticChoices: PronosticChoice[]) {
+  deleteCeremonyAwardsPick(ceremonyId: number, awardDeletion: AwardDeletion) {
     return this
       .httpClientAuthenticated
-      .restRequest<SeriliazedId>(HttpMethod.POST, `/ceremonies/${ceremonyId}/pronostics/link`)
-      .jsonBody(pronosticChoices)
+      .restRequest<void>(HttpMethod.POST, `/ceremonies/${ceremonyId}/pronostics/remove`)
+      .jsonBody(awardDeletion)
       .execute();
   }
 
-  saveAnonymousPronostics(ceremonyId: number, pronosticChoices: PronosticChoice[]) {
+  linkPronosticsToUser(ceremonyId: number, ceremonyPronostics: CeremonyPronostics) {
+    return this
+      .httpClientAuthenticated
+      .restRequest<SeriliazedId>(HttpMethod.POST, `/ceremonies/${ceremonyId}/pronostics/link`)
+      .jsonBody(ceremonyPronostics)
+      .execute();
+  }
+
+  saveAnonymousPronostics(ceremonyId: number, pronosticChoices: CeremonyPronostics) {
     return this
       .httpClient
       .restRequest<SeriliazedId>(HttpMethod.POST, `/ceremonies/${ceremonyId}/anonymous-pronostics`)

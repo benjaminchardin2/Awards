@@ -43,8 +43,8 @@ p {
   flex-direction: column;
   height: 100svh;
   overflow: auto;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: $header-size;
+  padding-bottom: $footer-size;
 
   .main-layout {
     flex-grow: 1;
@@ -53,5 +53,11 @@ p {
     .content {
       flex-grow: 1;
     }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .page-layout {
+    padding-bottom: $footer-size-mobile;
   }
 }

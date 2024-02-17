@@ -8,6 +8,7 @@ export type GoogleConfiguration = {
 
 export type FrontendConfiguration = {
   isAccountEnabled: boolean,
+  localStorageResetDate: string,
 };
 
 export default class ConfigurationApi {
