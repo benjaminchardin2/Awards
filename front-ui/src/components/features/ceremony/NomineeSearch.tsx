@@ -249,7 +249,6 @@ export default function NomineeSearch({
                   onClose={() => {
                     setOpen(false);
                   }}
-                  noOptionsText={messages.search.no_options}
                   getOptionKey={(x: SearchResult) => x.id}
                   filterOptions={(x: SearchResult[]) => x}
                   onInputChange={debounce(

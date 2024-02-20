@@ -29,7 +29,7 @@ const frMessages: Translations = {
     favorite: 'Coup de coeur',
     share: 'Partager',
     copied: 'Copié',
-    make_own_pronostics: 'Faire vos propres pronostics',
+    make_own_pronostics: 'Faites vos propres pronostics',
     go_home: 'Retourner à l\'accueil',
     skip_choice: 'Passer ce choix',
     delete_choice: 'Supprimer mon choix',
