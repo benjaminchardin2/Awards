@@ -249,7 +249,6 @@ export default function NomineeSearch({
                   onClose={() => {
                     setOpen(false);
                   }}
-                  noOptionsText={messages.search.no_options}
                   getOptionKey={(x: SearchResult) => x.id}
                   filterOptions={(x: SearchResult[]) => x}
                   onInputChange={debounce(
@@ -263,6 +262,7 @@ export default function NomineeSearch({
                   getOptionLabel={(option: SearchResult) => option.name}
                   options={options}
                   loading={loader.isLoading}
+                  noOptionsText={messages.search.no_options}
                   renderInput={(params: AutocompleteRenderInputParams) => (
                     <TextField
                       {...params}
