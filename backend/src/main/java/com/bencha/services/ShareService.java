@@ -4,11 +4,14 @@ import com.bencha.db.dao.UserParticipationDao;
 import com.bencha.db.generated.QCeremony;
 import com.bencha.db.generated.QUserParticipation;
 import com.bencha.db.generated.UserParticipation;
+import com.bencha.enums.PronosticType;
+import com.bencha.webservices.beans.AwardShare;
 import com.bencha.webservices.beans.CeremonyShare;
 import com.querydsl.core.Tuple;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 
 @Singleton
 public class ShareService {
@@ -34,11 +37,19 @@ public class ShareService {
             return null;
         }
         String ceremonyName = tuple.get(QCeremony.ceremony.name);
+        List<AwardShare> awardShares = pronosticService.findAwardsShareWithParticipationId(userParticipation.getId());
         return CeremonyShare
             .of(
                 ceremonyName,
                 userParticipation.getCeremonyId(),
-                pronosticService.findAwardsShareWithParticipationId(userParticipation.getId())
+                awardShares
+                    .stream()
+                    .filter(awardShare -> PronosticType.WINNER.equals(awardShare.getPronosticType()))
+                    .toList(),
+                awardShares
+                    .stream()
+                    .filter(awardShare -> PronosticType.FAVORITE.equals(awardShare.getPronosticType()))
+                    .toList()
             );
     }
 }

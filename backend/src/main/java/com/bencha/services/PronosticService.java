@@ -4,10 +4,9 @@ import com.bencha.db.dao.PronosticDao;
 import com.bencha.db.dao.UserParticipationDao;
 import com.bencha.db.generated.*;
 import com.bencha.enums.AwardsType;
+import com.bencha.enums.PronosticType;
 import com.bencha.services.configuration.ConfigurationService;
-import com.bencha.webservices.beans.AwardShare;
-import com.bencha.webservices.beans.Nominee;
-import com.bencha.webservices.beans.PronosticChoice;
+import com.bencha.webservices.beans.*;
 import com.querydsl.core.Tuple;
 
 import javax.inject.Inject;
@@ -38,28 +37,52 @@ public class PronosticService {
         this.awardNomineeService = awardNomineeService;
     }
 
-    public Map<Long, PronosticChoice> findUserPronostics(Long userId, Long ceremonyId) {
+    public CeremonyPronostics findUserPronostics(Long userId, Long ceremonyId) {
         UserParticipation userParticipation = userParticipationDao.findUserParticipation(userId, ceremonyId);
         if (userParticipation == null) {
-            return Map.of();
+            return CeremonyPronostics.of(
+                Map.of(),
+                Map.of()
+            );
         }
         List<Pronostic> pronostics = this.pronosticDao.findUserPronosticsForParticipation(userParticipation.getId());
-        return pronostics.stream()
-            .collect(Collectors.toMap(
-                Pronostic::getAwardId,
-                awardNomineeService::pronosticToPronosticChoice
-            ));
+        Map<Boolean, List<Pronostic>> pronosticsPartitioned = pronostics.stream()
+            .collect(Collectors.partitioningBy(
+                pronostic -> {
+                    PronosticType pronosticType = PronosticType.valueOf(pronostic.getType());
+                    return PronosticType.WINNER.equals(pronosticType);
+                }
+            )
+        );
+        return CeremonyPronostics
+            .of(
+                pronosticsPartitioned.get(false)
+                    .stream()
+                    .collect(Collectors.toMap(
+                        Pronostic::getAwardId,
+                        awardNomineeService::pronosticToPronosticChoice
+                    )
+                ),
+                pronosticsPartitioned.get(true)
+                    .stream()
+                    .collect(Collectors.toMap(
+                            Pronostic::getAwardId,
+                            awardNomineeService::pronosticToPronosticChoice
+                        )
+                    )
+            );
     }
 
     public void saveUserChoice(Long userId, Long ceremonyId, PronosticChoice pronosticChoice) {
         Long userParticipationId = findUserParticipationOrCreateIt(userId, ceremonyId);
-        Pronostic pronostic = pronosticDao.findUserPronosticsForAward(userParticipationId, pronosticChoice.getAwardId());
+        Pronostic pronostic = pronosticDao.findUserPronosticsForAwardAndPronosticType(userParticipationId, pronosticChoice.getAwardId(), pronosticChoice.getType());
         if (pronostic == null) {
             pronostic = new Pronostic();
         }
         pronostic.setNomineeId(pronosticChoice.getNomineeId());
         pronostic.setAwardId(pronosticChoice.getAwardId());
         pronostic.setUserParticipationId(userParticipationId);
+        pronostic.setType(pronosticChoice.getType().name());
         if (pronosticChoice.getNominee() != null) {
             pronostic.setTdmbMovieId(pronosticChoice.getNominee().getTmdbMovieId().longValue());
             pronostic.setTdmbPersonId(pronosticChoice.getNominee().getTmdbPersonId().longValue());
@@ -67,17 +90,33 @@ public class PronosticService {
         pronosticDao.save(pronostic);
     }
 
+    public void removeCeremonyPronostics(Long userId, Long ceremonyId, AwardDeletion awardDeletion) {
+        Long userParticipationId = findUserParticipationOrCreateIt(userId, ceremonyId);
+        List<Pronostic> pronostics = pronosticDao.findUserPronosticsForAward(userParticipationId, awardDeletion.getAwardId());
+        pronostics
+            .forEach(pronostic -> pronosticDao.delete(pronostic.getId()));
+    }
+
+    public void removeAnonymousCeremonyPronostics(AwardDeletion awardDeletion) {
+        List<Pronostic> pronostics = pronosticDao.findUserPronosticsForAward(awardDeletion.getParticipationId(), awardDeletion.getAwardId());
+        pronostics
+            .forEach(pronostic -> pronosticDao.delete(pronostic.getId()));
+    }
+
     public void saveAnonymousChoice(PronosticChoice pronosticChoice) {
-        Pronostic pronostic = pronosticDao.findUserPronosticsForAward(pronosticChoice.getParticipationId(), pronosticChoice.getAwardId());
+        Pronostic pronostic = pronosticDao.findUserPronosticsForAwardAndPronosticType(pronosticChoice.getParticipationId(), pronosticChoice.getAwardId(), pronosticChoice.getType());
         if (pronostic == null) {
             pronostic = new Pronostic();
         }
         pronostic.setNomineeId(pronosticChoice.getNomineeId());
         pronostic.setAwardId(pronosticChoice.getAwardId());
         pronostic.setUserParticipationId(pronosticChoice.getParticipationId());
+        pronostic.setType(pronosticChoice.getType().name());
         if (pronosticChoice.getNominee() != null) {
             pronostic.setTdmbMovieId(pronosticChoice.getNominee().getTmdbMovieId().longValue());
-            pronostic.setTdmbPersonId(pronosticChoice.getNominee().getTmdbPersonId().longValue());
+            if (pronosticChoice.getNominee().getTmdbPersonId() != null) {
+                pronostic.setTdmbPersonId(pronosticChoice.getNominee().getTmdbPersonId().longValue());
+            }
         }
         pronosticDao.save(pronostic);
     }
@@ -94,13 +133,22 @@ public class PronosticService {
         return userParticipation.getId();
     }
 
-    public Long createAnonymousParticipation(Long ceremonyId, List<PronosticChoice> pronosticChoices) {
+    public Long createAnonymousParticipation(Long ceremonyId, CeremonyPronostics ceremonyPronostics) {
         UserParticipation userParticipation = new UserParticipation();
         userParticipation.setCeremonyId(ceremonyId);
         userParticipation.setShareCode(UUID.randomUUID().toString());
         userParticipation = userParticipationDao.save(userParticipation);
         Long userParticipationId = userParticipation.getId();
-        pronosticChoices
+        ceremonyPronostics
+            .getWinnerPicks()
+            .values()
+            .forEach(pronosticChoice -> {
+                pronosticChoice.setParticipationId(userParticipationId);
+                saveAnonymousChoice(pronosticChoice);
+            });
+        ceremonyPronostics
+            .getFavoritesPicks()
+            .values()
             .forEach(pronosticChoice -> {
                 pronosticChoice.setParticipationId(userParticipationId);
                 saveAnonymousChoice(pronosticChoice);
@@ -108,7 +156,7 @@ public class PronosticService {
         return userParticipationId;
     }
 
-    public void linkPronosticsToUser(Long ceremonyId, Long userId, List<PronosticChoice> pronosticChoices) {
+    public void linkPronosticsToUser(Long ceremonyId, Long userId, CeremonyPronostics ceremonyPronostics) {
         UserParticipation userParticipation = userParticipationDao.findUserParticipation(userId, ceremonyId);
         if (userParticipation == null) {
             userParticipation = new UserParticipation();
@@ -117,7 +165,16 @@ public class PronosticService {
             userParticipation.setShareCode(UUID.randomUUID().toString());
             userParticipation = userParticipationDao.save(userParticipation);
             Long userParticipationId = userParticipation.getId();
-            pronosticChoices
+            ceremonyPronostics
+                .getFavoritesPicks()
+                .values()
+                .forEach(pronosticChoice -> {
+                    pronosticChoice.setParticipationId(userParticipationId);
+                    saveAnonymousChoice(pronosticChoice);
+                });
+            ceremonyPronostics
+                .getWinnerPicks()
+                .values()
                 .forEach(pronosticChoice -> {
                     pronosticChoice.setParticipationId(userParticipationId);
                     saveAnonymousChoice(pronosticChoice);
@@ -148,9 +205,11 @@ public class PronosticService {
                         awardNominee,
                         awardsType
                     );
+                    PronosticType pronosticType = PronosticType.valueOf(pronostic.getType());
                     return AwardShare.of(
                         award.getName(),
                         awardsType,
+                        pronosticType,
                         nominee
                     );
                 } return null;

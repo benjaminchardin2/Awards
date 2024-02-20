@@ -11,7 +11,8 @@ export type AwardShare = {
 export type CeremonyShare = {
   ceremonyTitle: string,
   ceremonyId: string,
-  awardShares: AwardShare[],
+  winnerAwardShares: AwardShare[],
+  favoriteAwardShares: AwardShare[],
 };
 
 export default class ShareApi {

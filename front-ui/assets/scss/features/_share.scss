@@ -6,6 +6,53 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
+
+  .MuiToggleButtonGroup-root {
+    margin-top: $spacer-5;
+    margin-bottom: $spacer-2;
+    display: flex;
+    flex-direction: row;
+
+    .winner {
+      &.MuiButtonBase-root {
+        background: $golden-gradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-color: white;
+
+        .MuiSvgIcon-root {
+          background: $golden-gradient;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        &.Mui-selected {
+          .MuiSvgIcon-root {
+            color: white;
+          }
+          background: $golden-gradient;
+          color: white;
+          -webkit-background-clip: unset;
+          -webkit-text-fill-color: unset;
+        }
+      }
+    }
+    .favorites {
+      &.MuiButtonBase-root {
+        color: $pink;
+        &.Mui-selected {
+          background-color: $pink;
+          color: white;
+        }
+      }
+    }
+    .MuiButtonBase-root {
+      padding: $spacer-2;
+      flex-basis: 50%;
+      height: 50px;
+    }
+  }
+
   .share-list {
     flex-grow: 1;
     display: flex;
@@ -16,12 +63,14 @@
         max-width: 160px;
 
         .share-images {
+          flex-grow: 1;
           max-width: 160px;
           display: flex;
           flex-direction: column;
           position: relative;
 
           .award-tile {
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
             background: $golden-gradient;
@@ -29,6 +78,7 @@
             border-radius: 5px;
 
           .award-tile-content {
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
 
@@ -43,10 +93,12 @@
             }
 
             .award-title {
+              flex-grow: 1;
               border-top-right-radius: 3px;
               border-top-left-radius: 3px;
               padding: $spacer-2;
               display: flex;
+              align-items: center;
               justify-content: center;
               background-color: $black;
 
@@ -78,6 +130,10 @@
         line-height: 1.2;
         font-size: $font-size-normal;
         font-weight: bold;
+      }
+
+      .MuiImageListItemBar-subtitle {
+        white-space: normal;
       }
       }
     }

@@ -17,7 +17,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.Map;
 
 @Path("/ceremonies")
 @Tag(name = "ceremonies", description = "Interactions linked to ceremonies")
@@ -69,7 +68,7 @@ public class CeremonyWs {
     @GET
     @Path("/{id}/pronostics")
     @Operation(description = "Get the top two ceremonies highlighted")
-    public Map<Long, PronosticChoice> findCeremonyPronostics(@PathParam("id") Long ceremonyId, @Context WebSessionAdmin webSessionAdmin) {
+    public CeremonyPronostics findCeremonyPronostics(@PathParam("id") Long ceremonyId, @Context WebSessionAdmin webSessionAdmin) {
         return pronosticService.findUserPronostics(webSessionAdmin.getIdUser(), ceremonyId);
     }
 
@@ -85,17 +84,28 @@ public class CeremonyWs {
     }
 
     @POST
+    @Path("/{id}/pronostics/remove")
+    @Operation(description = "Get the top two ceremonies highlighted")
+    public void removeCeremonyPronostics(@PathParam("id") Long ceremonyId, @Context WebSessionAdmin webSessionAdmin, AwardDeletion awardDeletion) {
+        if (webSessionAdmin != null) {
+            pronosticService.removeCeremonyPronostics(webSessionAdmin.getIdUser(), ceremonyId, awardDeletion);
+        } else {
+            pronosticService.removeAnonymousCeremonyPronostics(awardDeletion);
+        }
+    }
+
+    @POST
     @Path("/{id}/pronostics/link")
     @Operation(description = "Link pronostics to user")
-    public void linkPronosticsToUser(@PathParam("id") Long ceremonyId, @Context WebSessionAdmin webSessionAdmin, List<PronosticChoice> pronosticChoices) {
-        pronosticService.linkPronosticsToUser(ceremonyId, webSessionAdmin.getIdUser(), pronosticChoices);
+    public void linkPronosticsToUser(@PathParam("id") Long ceremonyId, @Context WebSessionAdmin webSessionAdmin, CeremonyPronostics ceremonyPronostics) {
+        pronosticService.linkPronosticsToUser(ceremonyId, webSessionAdmin.getIdUser(), ceremonyPronostics);
     }
 
     @POST
     @Path("/{id}/anonymous-pronostics")
     @Operation(description = "Save pronostics")
-    public SerializedId saveAnonymousPronostics(@PathParam("id") Long ceremonyId, List<PronosticChoice> pronosticChoices) {
-        return SerializedId.of(pronosticService.createAnonymousParticipation(ceremonyId, pronosticChoices));
+    public SerializedId saveAnonymousPronostics(@PathParam("id") Long ceremonyId, CeremonyPronostics ceremonyPronostics) {
+        return SerializedId.of(pronosticService.createAnonymousParticipation(ceremonyId, ceremonyPronostics));
     }
 
     @POST

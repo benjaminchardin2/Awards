@@ -11,28 +11,31 @@ import javax.annotation.processing.Generated;
 @Generated("com.coreoz.plume.db.querydsl.generation.IdBeanSerializer")
 public class Pronostic extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuerydsl {
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("award_id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long awardId;
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long id;
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("nominee_id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long nomineeId;
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("tdmb_movie_id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long tdmbMovieId;
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("tdmb_person_id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long tdmbPersonId;
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    @Column("type")
+    private String type;
+
     @Column("user_participation_id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long userParticipationId;
 
     public Long getAwardId() {
@@ -73,6 +76,14 @@ public class Pronostic extends com.coreoz.plume.db.querydsl.crud.CrudEntityQuery
 
     public void setTdmbPersonId(Long tdmbPersonId) {
         this.tdmbPersonId = tdmbPersonId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getUserParticipationId() {

@@ -1,13 +1,16 @@
 package com.bencha.services.tmdb;
 
+import com.bencha.enums.AwardsType;
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.TmdbPeople;
 import info.movito.themoviedbapi.model.Artwork;
+import info.movito.themoviedbapi.model.people.PersonCredit;
 import info.movito.themoviedbapi.model.people.PersonPeople;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -65,5 +68,20 @@ public class TmdbPeopleService {
                     );
                 tmdbCacheService.putPersonInCache(String.valueOf(people.getId()), personWithArtwork);
             });
+    }
+
+    public List<PersonCredit> getPersonCredits(Long personId, AwardsType awardsType) {
+        if (awardsType.equals(AwardsType.CAST)) {
+            return this.tmdbPeople.getCombinedPersonCredits(personId.intValue()).getCast()
+                .stream()
+                .filter(personCredit -> personCredit.getMediaType().equals("movie"))
+                .toList();
+        } else if (awardsType.equals(AwardsType.CREW)) {
+            return this.tmdbPeople.getCombinedPersonCredits(personId.intValue()).getCrew()
+                .stream()
+                .filter(personCredit -> personCredit.getMediaType().equals("movie"))
+                .toList();
+        }
+        return List.of();
     }
 }

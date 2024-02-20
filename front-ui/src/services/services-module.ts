@@ -8,6 +8,7 @@ import LegalService from './legal/LegalService';
 import GoogleService from './session/GoogleService';
 import CeremonyPicksService from './ceremony/CeremonyPicksService';
 import ConfigurationService from './configuration/ConfigurationService';
+import StorageService from './storage/StorageService';
 
 export default function installServicesModule(injector: Injector) {
   // browser dependent services
@@ -22,4 +23,5 @@ export default function installServicesModule(injector: Injector) {
   injector.registerSingleton(GoogleService);
   injector.registerSingleton(CeremonyPicksService);
   injector.registerSingleton(ConfigurationService);
+  injector.registerSingleton(StorageService);
 }

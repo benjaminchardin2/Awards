@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { NavigateFunction, useNavigate, useParams } from 'react-router-dom';
 import Fab from '@mui/material/Fab';
 import ShareIcon from '@mui/icons-material/Share';
-import CeremonyApi, { AwardWithNominees, PronosticChoice } from '../../../api/ceremony/CeremonyApi';
+import CeremonyApi, { AwardWithNominees, CeremonyPronostics, PronosticChoice } from '../../../api/ceremony/CeremonyApi';
 import useLoader, { LoaderState } from '../../../lib/plume-http-react-hook-loader/promiseLoaderHook';
 import { useOnComponentMounted, useOnDependenciesChange } from '../../../lib/react-hooks-alias/ReactHooksAlias';
 import CeremonyPicksService from '../../../services/ceremony/CeremonyPicksService';
@@ -23,7 +23,8 @@ export default function Ceremony() {
   const ceremonyPicksService: CeremonyPicksService = getGlobalInstance(CeremonyPicksService);
   const sessionService: SessionService = getGlobalInstance(SessionService);
   const [awards, setAwards] = useState<AwardWithNominees[] | undefined>(undefined);
-  const [userPicks, setUserPicks] = useState<{ [key: string]: PronosticChoice }>({});
+  const [winnerPicks, setWinnerPicks] = useState<{ [key: string]: PronosticChoice }>({});
+  const [favoritePicks, setFavoritePicks] = useState<{ [key: string]: PronosticChoice }>({});
   const [shareLink, setShareLink] = useState<string>();
   const [open, toggle] = useToggle(false);
   const loader: LoaderState = useLoader();
@@ -47,8 +48,9 @@ export default function Ceremony() {
   useOnDependenciesChange(() => {
     if (!Number.isNaN(numberId)) {
       ceremonyPicksService.findCeremonyPicks(numberId, isAuthenticated)
-        .then((userChoices: { [key: string]: PronosticChoice } | undefined) => {
-          setUserPicks(userChoices || {});
+        .then((ceremonyPronostics: CeremonyPronostics | undefined) => {
+          setWinnerPicks(ceremonyPronostics?.winnerPicks || {});
+          setFavoritePicks(ceremonyPronostics?.favoritesPicks || {});
         });
     }
   }, [isAuthenticated, numberId]);
@@ -57,10 +59,42 @@ export default function Ceremony() {
     ceremonyPicksService
       .saveCeremonyPicks(numberId, isAuthenticated, pronosticChoice)
       .then(() => {
-        setUserPicks({
-          ...userPicks,
-          [pronosticChoice.awardId]: pronosticChoice,
-        });
+        if (pronosticChoice.type === 'WINNER') {
+          setWinnerPicks({
+            ...winnerPicks,
+            [pronosticChoice.awardId]: pronosticChoice,
+          });
+        } else {
+          setFavoritePicks({
+            ...favoritePicks,
+            [pronosticChoice.awardId]: pronosticChoice,
+          });
+        }
+      });
+  };
+
+  const skipChoice = (awardId: string) => {
+    ceremonyPicksService
+      .deleteCeremonyAwardsPick(numberId, awardId, isAuthenticated)
+      .then(() => {
+        setWinnerPicks(
+          Object.keys(winnerPicks)
+            .filter((objKey: string) => objKey !== awardId)
+            .reduce((newObj: { [key: string]: PronosticChoice }, key: string) => ({
+              ...newObj,
+              [key]: winnerPicks[key],
+            }), {},
+            ),
+        );
+        setFavoritePicks(
+          Object.keys(favoritePicks)
+            .filter((objKey: string) => objKey !== awardId)
+            .reduce((newObj: { [key: string]: PronosticChoice }, key: string) => ({
+              ...newObj,
+              [key]: favoritePicks[key],
+            }), {},
+            ),
+        );
       });
   };
 
@@ -80,11 +114,13 @@ export default function Ceremony() {
           <>
             <Awards
               awards={awards}
-              userPicks={userPicks}
+              winnerPicks={winnerPicks}
+              favoritePicks={favoritePicks}
               updateAwardPronosticChoice={updateAwardPronosticChoice}
+              skipChoice={skipChoice}
             />
             <div className="sticky-button">
-              <Fab size="medium" onClick={getShareLink} disabled={Object.values(userPicks).length === 0}>
+              <Fab size="medium" onClick={getShareLink} disabled={Object.values(favoritePicks).length === 0 && Object.values(winnerPicks).length === 0}>
                 <ShareIcon/>
               </Fab>
             </div>

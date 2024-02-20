@@ -14,15 +14,15 @@ public class VerificationToken extends com.coreoz.plume.db.querydsl.crud.CrudEnt
     @Column("expiration_date")
     private java.time.Instant expirationDate;
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long id;
 
     @Column("type")
     private String type;
 
-    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     @Column("user_id")
+    @JsonSerialize(using=com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long userId;
 
     @Column("verification_string")

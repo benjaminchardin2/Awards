@@ -1,5 +1,6 @@
 package com.bencha.services;
 
+import com.bencha.db.dao.AwardDao;
 import com.bencha.db.dao.AwardNomineeDao;
 import com.bencha.db.generated.AwardNominee;
 import com.bencha.db.generated.Pronostic;
@@ -9,6 +10,7 @@ import com.bencha.services.tmdb.TmdbConfigurationService;
 import com.bencha.services.tmdb.TmdbMovieService;
 import com.bencha.services.tmdb.TmdbPeopleService;
 import com.bencha.webservices.beans.Nominee;
+import com.bencha.webservices.beans.NomineeRequest;
 import com.bencha.webservices.beans.PronosticChoice;
 import info.movito.themoviedbapi.model.MovieDb;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AwardNomineeService {
     private final AwardNomineeDao awardNomineeDao;
+    private final AwardDao awardDao;
     private final TmdbMovieService tmdbMovieService;
     private final TmdbPeopleService tmdbPeopleService;
     private final TmdbConfigurationService tmdbConfigurationService;
@@ -34,11 +37,13 @@ public class AwardNomineeService {
     @Inject
     public AwardNomineeService(
         AwardNomineeDao awardNomineeDao,
+        AwardDao awardDao,
         TmdbMovieService tmdbMovieService,
         TmdbConfigurationService tmdbConfigurationService,
         TmdbPeopleService tmdbPeopleService
     ) {
         this.awardNomineeDao = awardNomineeDao;
+        this.awardDao = awardDao;
         this.tmdbMovieService = tmdbMovieService;
         this.tmdbPeopleService = tmdbPeopleService;
         this.tmdbConfigurationService = tmdbConfigurationService;
@@ -106,15 +111,13 @@ public class AwardNomineeService {
         pronosticChoice.setNomineeId(pronostic.getNomineeId());
         pronosticChoice.setAwardId(pronostic.getAwardId());
         if (pronostic.getNomineeId() == null) {
+            AwardsType awardsType = AwardsType.valueOf(awardDao.findById(pronostic.getAwardId()).getType());
             Nominee nomineeDto = new Nominee();
-            if (pronostic.getTdmbMovieId() != null) {
-                MovieDb movieDb = tmdbMovieService.getMovieById(pronostic.getTdmbMovieId());
-                nomineeDto.setNomineeId(null);
-                nomineeDto.setMovieTitle(movieDb.getOriginalTitle());
-                nomineeDto.setFrenchMovieTitle(movieDb.getTitle());
-                nomineeDto.setTmdbMovieId(movieDb.getId());
-                nomineeDto.setMovieMediaUrl(tmdbConfigurationService.buildMediaUrl(movieDb.getPosterPath()));
-            }
+            nomineeDto = convertSearchToNominee(NomineeRequest.of(
+                pronostic.getTdmbMovieId(),
+                pronostic.getTdmbPersonId(),
+                awardsType
+            ));
             pronosticChoice.setNominee(nomineeDto);
         }
         return pronosticChoice;
@@ -123,14 +126,13 @@ public class AwardNomineeService {
     public Nominee pronosticToNominee(Pronostic pronostic, AwardNominee nominee, AwardsType awardsType) {
         Nominee nomineeDto = new Nominee();
         if (pronostic.getNomineeId() == null) {
-            if (pronostic.getTdmbMovieId() != null) {
-                MovieDb movieDb = tmdbMovieService.getMovieById(pronostic.getTdmbMovieId());
-                nomineeDto.setNomineeId(null);
-                nomineeDto.setMovieTitle(movieDb.getOriginalTitle());
-                nomineeDto.setFrenchMovieTitle(movieDb.getTitle());
-                nomineeDto.setTmdbMovieId(movieDb.getId());
-                nomineeDto.setMovieMediaUrl(tmdbConfigurationService.buildMediaUrl(movieDb.getPosterPath()));
-            }
+            nomineeDto = convertSearchToNominee(
+                NomineeRequest.of(
+                    pronostic.getTdmbMovieId(),
+                    pronostic.getTdmbPersonId(),
+                    awardsType
+                )
+            );
         } else {
             MovieDb movieDb = tmdbMovieService.getMovieById(nominee.getTdmbMovieId());
             buildNomineeMovie(nominee, movieDb, nomineeDto);
@@ -172,7 +174,6 @@ public class AwardNomineeService {
         nomineeDto.setMovieTitle(movieDb.getOriginalTitle());
         nomineeDto.setFrenchMovieTitle(movieDb.getTitle());
         nomineeDto.setTmdbMovieId(nominee.getTdmbMovieId().intValue());
-        nomineeDto.setTmdbMovieId(nominee.getTdmbMovieId().intValue());
         nomineeDto.setMovieMediaUrl(tmdbConfigurationService.buildMediaUrl(movieDb.getPosterPath()));
         return nomineeDto;
     }
@@ -211,5 +212,23 @@ public class AwardNomineeService {
                 )
             );
         this.tmdbPeopleService.loadPersonsInCache(personIds, shouldFetchArtwork);
+    }
+
+    public Nominee convertSearchToNominee(NomineeRequest nomineeRequest) {
+        MovieDb movieDb = tmdbMovieService.getMovieById(nomineeRequest.getMovieId());
+        Nominee nomineeDto = new Nominee();
+        nomineeDto.setMovieTitle(movieDb.getOriginalTitle());
+        nomineeDto.setFrenchMovieTitle(movieDb.getTitle());
+        nomineeDto.setTmdbMovieId(movieDb.getId());
+        nomineeDto.setMovieMediaUrl(tmdbConfigurationService.buildMediaUrl(movieDb.getPosterPath()));
+        if (nomineeRequest.getAwardsType().equals(AwardsType.CAST) || nomineeRequest.getAwardsType().equals(AwardsType.CREW)) {
+            PersonWithArtwork personWithArtwork = tmdbPeopleService.getPersonWithArtworkById(nomineeRequest.getPersonId(), nomineeRequest.getAwardsType().equals(AwardsType.CAST));
+            nomineeDto.setPersonName(personWithArtwork.getPerson().getName());
+            nomineeDto.setTmdbPersonId(personWithArtwork.getPersonId().intValue());
+            if (personWithArtwork.getArtwork().isPresent()) {
+                nomineeDto.setPersonMediaUrl(tmdbConfigurationService.buildMediaUrl(personWithArtwork.getArtwork().get().getFilePath()));
+            }
+        }
+        return nomineeDto;
     }
 }

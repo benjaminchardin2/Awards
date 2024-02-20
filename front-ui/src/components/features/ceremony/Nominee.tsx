@@ -3,20 +3,22 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import React from 'react';
 import { NomineeType } from '../../../api/ceremony/CeremonyApi';
 import useMessages from '../../../i18n/hooks/messagesHook';
 import { ActionButton, ActionsContainer } from '../../theme/action/Actions';
 
 type NomineeProps = {
-  onClick: () => void,
+  onClick: (type: 'WINNER' | 'FAVORITE') => void,
   nominee: NomineeType,
   isSelected?: boolean,
+  isFavorite?: boolean,
   awardType: 'MOVIE' | 'CAST' | 'CREW',
 };
 
 export default function Nominee({
-  nominee, onClick, isSelected, awardType,
+  nominee, onClick, isSelected, isFavorite, awardType,
 }: NomineeProps) {
   const { messages } = useMessages();
 
@@ -67,8 +69,20 @@ export default function Nominee({
                 </ActionButton>
               )
               : (
-                <ActionButton actionStyle="primary" onClick={onClick}>
+                <ActionButton actionStyle="primary" onClick={() => onClick('WINNER')}>
                   {messages.action.select}
+                </ActionButton>
+              )}
+            {isFavorite
+              ? (
+                <ActionButton actionStyle="secondary" icon={<FavoriteIcon/>} disabled cssClasses="favorite-selected">
+                  {messages.ceremony.favorite}
+                </ActionButton>
+              )
+              : (
+                <ActionButton actionStyle="primary" icon={<FavoriteIcon/>} cssClasses="favorite"
+                              onClick={() => onClick('FAVORITE')}>
+                  {messages.action.favorite}
                 </ActionButton>
               )}
           </ActionsContainer>

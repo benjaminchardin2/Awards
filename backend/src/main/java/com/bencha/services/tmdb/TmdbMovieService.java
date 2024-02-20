@@ -37,6 +37,10 @@ public class TmdbMovieService {
             });
     }
 
+    public MovieDb getMovieWithCreditsById(Long id) {
+        return this.tmdbMovies.getMovie(id.intValue(), "fr", TmdbMovies.MovieMethod.credits);
+    }
+
     public void loadMoviesInCache(Set<Long> movieIds) {
         movieIds
             .forEach(id -> {

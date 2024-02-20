@@ -29,10 +29,14 @@ export type Translations = {
     confirm_password: string,
     account_will_be_deleted: string,
     select: string,
+    favorite: string,
     share: string,
     copied: string,
     make_own_pronostics: string,
     go_home: string,
+    skip_choice: string,
+    delete_choice: string,
+    load_more: string,
   },
   // common labels
   label: {
@@ -142,12 +146,26 @@ export type Translations = {
   },
   ceremony: {
     selected: string,
+    favorite: string,
     yourChoice: (title: string | undefined) => string,
+    yourFavorite: (title: string | undefined) => string,
   },
   'share-modal': {
     title: string,
     description: string,
     content_not_connected: string,
     content_connected: string,
+  },
+
+  share: {
+    favorites: string,
+    winner: string,
+  },
+
+  search: {
+    favorite: string,
+    movies: string,
+    persons: string,
+    no_options: string,
   },
 };

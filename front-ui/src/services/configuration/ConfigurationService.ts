@@ -1,10 +1,5 @@
 import { observable, Observable, WritableObservable } from 'micro-observables';
-import { HttpError } from 'simple-http-rest-client';
-import { Logger } from 'simple-logging-system';
 import ConfigurationApi, { FrontendConfiguration } from '../../api/configuration/ConfigurationApi';
-import { LegalPages } from '../../api/legal/LegalApi';
-
-const logger: Logger = new Logger('ConfigurationService');
 
 export default class ConfigurationService {
   private frontendConfiguration: WritableObservable<FrontendConfiguration | undefined> = observable(undefined);
@@ -13,13 +8,11 @@ export default class ConfigurationService {
   }
 
   public loadFrontendConfiguration() {
-    this.configurationApi.getFrontendConfiguration()
-      .then((frontendConfigurationResult: FrontendConfiguration) => {
-        this.frontendConfiguration.set(frontendConfigurationResult);
-      })
-      .catch((e: HttpError) => {
-        logger.error('Something went wrong while fetching frontend configuration', e);
-      });
+    return this.configurationApi.getFrontendConfiguration();
+  }
+
+  public setFrontendConfiguration(frontendConfiguration: FrontendConfiguration) {
+    this.frontendConfiguration.set(frontendConfiguration);
   }
 
   public getFrontendConfiguration(): Observable<FrontendConfiguration | undefined> {
