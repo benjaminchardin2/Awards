@@ -12,5 +12,5 @@ https://github.com/Coreoz/Plume
 
 Frontend
 ------------
-Built with the base Plume React artifact :
+Built with Plume React framework :
 https://github.com/Coreoz/create-plume-react-project
