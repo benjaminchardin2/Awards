@@ -262,6 +262,7 @@ export default function NomineeSearch({
                   getOptionLabel={(option: SearchResult) => option.name}
                   options={options}
                   loading={loader.isLoading}
+                  noOptionsText={messages.search.no_options}
                   renderInput={(params: AutocompleteRenderInputParams) => (
                     <TextField
                       {...params}
