@@ -48,8 +48,8 @@ export default function Awards({
       return (picks[awardId]?.nomineeId
         ? awards
           .find((awd: AwardWithNominees) => awd.awardId === awardId)?.nominees
-          .find((nominee: NomineeType) => nominee.nomineeId === picks[awardId]?.nomineeId)?.movieTitle
-        : picks[awardId]?.nominee?.movieTitle);
+          .find((nominee: NomineeType) => nominee.nomineeId === picks[awardId]?.nomineeId)?.frenchMovieTitle
+        : picks[awardId]?.nominee?.frenchMovieTitle);
     }
     return (picks[awardId]?.nomineeId
       ? awards
@@ -58,20 +58,21 @@ export default function Awards({
       : picks[awardId]?.nominee?.personName);
   };
 
-  const pickSubTitle = (awardId: number) => {
+  const pickSubTitle = (awardId: number, type?: 'FAVORITE' | 'WINNER') => {
     const award: AwardWithNominees | undefined = awards
       .find((awd: AwardWithNominees) => awd.awardId === awardId);
+    const picks: { [key: string]: PronosticChoice } = (type === 'FAVORITE') ? favoritePicks : winnerPicks;
     if (!award) {
       return undefined;
     }
     if (award.type === 'MOVIE') {
       return undefined;
     }
-    return (winnerPicks[awardId]?.nomineeId
+    return (picks[awardId]?.nomineeId
       ? awards
         .find((awd: AwardWithNominees) => awd.awardId === awardId)?.nominees
-        .find((nominee: NomineeType) => nominee.nomineeId === winnerPicks[awardId]?.nomineeId)?.movieTitle
-      : winnerPicks[awardId]?.nominee?.movieTitle);
+        .find((nominee: NomineeType) => nominee.nomineeId === picks[awardId]?.nomineeId)?.frenchMovieTitle
+      : picks[awardId]?.nominee?.frenchMovieTitle);
   };
 
   const isMobile: boolean = useIsMobile();

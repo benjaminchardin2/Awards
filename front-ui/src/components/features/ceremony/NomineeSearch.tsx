@@ -1,14 +1,10 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import React, { SyntheticEvent, useState } from 'react';
-import Autocomplete, { AutocompleteRenderInputParams } from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
-import CircularProgress from '@mui/material/CircularProgress';
+import React, { ChangeEvent, useState } from 'react';
 import { getGlobalInstance } from 'plume-ts-di';
 import { Logger } from 'simple-logging-system';
 import { HttpError } from 'simple-http-rest-client';
-import { debounce } from '@mui/material/utils';
 import CardMedia from '@mui/material/CardMedia';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CardActions from '@mui/material/CardActions';
@@ -20,9 +16,9 @@ import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Button from '@mui/material/Button';
+import { debounce, TextField } from '@mui/material';
 import useMessages from '../../../i18n/hooks/messagesHook';
 import SearchApi, { AdditionalResults, SearchResult } from '../../../api/search/SearchApi';
-import useLoader, { LoaderState } from '../../../lib/plume-http-react-hook-loader/promiseLoaderHook';
 import { NomineeType } from '../../../api/ceremony/CeremonyApi';
 import { useOnDependenciesChange } from '../../../lib/react-hooks-alias/ReactHooksAlias';
 import { ActionButton, ActionsContainer } from '../../theme/action/Actions';
@@ -42,24 +38,24 @@ export default function NomineeSearch({
   onClick, awardType, awardId, nominee, skipChoice,
 }: NomineeSearchProps) {
   const { messages } = useMessages();
-  const loader: LoaderState = useLoader();
   const searchApi: SearchApi = getGlobalInstance(SearchApi);
   const [searchType, setSearchType] = useState<'MOVIES' | 'PERSONS'>('MOVIES');
   const [movie, setMovie] = useState<SearchResult | undefined | null>();
   const [person, setPerson] = useState<SearchResult | undefined | null>();
-  const [open, setOpen] = useState<boolean>(false);
+  const [searchString, setSearchString] = useState<string>('');
   const [nomineeResult, setNomineeResult] = useState<NomineeType | undefined>(nominee);
   const [options, setOptions] = useState<SearchResult[]>([]);
   const [additionalResults, setAdditionalResults] = useState<SearchResult[]>([]);
   const [additionalResultNextPage, setAdditionalResultNextPage] = useState<number>(0);
   const [hasMoreResult, setHasMoreResult] = useState<boolean>(false);
-
   const search = (value: string) => {
     if (value) {
       if (searchType === 'MOVIES') {
         searchApi
           .searchMovies(value, 0)
-          .then((results: SearchResult[]) => setOptions(results))
+          .then((results: SearchResult[]) => {
+            setOptions(results);
+          })
           .catch((e: HttpError) => {
             logger.error('Error occured while searching for movies', e);
             setOptions([]);
@@ -73,10 +69,28 @@ export default function NomineeSearch({
             setOptions([]);
           });
       }
+    } else {
+      setOptions([]);
     }
   };
 
-  const onAutocompleteChoice = (_: SyntheticEvent<Element, Event>, value: SearchResult | null) => {
+  const resetAutoComplete = () => {
+    setMovie(undefined);
+    setPerson(undefined);
+    setAdditionalResults([]);
+    setSearchString('');
+    setOptions([]);
+  };
+
+  useOnDependenciesChange(() => {
+    setNomineeResult(nominee);
+  }, [nominee]);
+
+  useOnDependenciesChange(() => {
+    resetAutoComplete();
+  }, [awardId]);
+
+  const onAutocompleteChoice = (value: SearchResult | null) => {
     if (searchType === 'MOVIES') {
       setMovie(value);
     } else {
@@ -130,6 +144,10 @@ export default function NomineeSearch({
         });
     }
   };
+
+  useOnDependenciesChange(debounce(() => {
+    search(searchString);
+  }, 1000), [searchString]);
 
   useOnDependenciesChange(() => {
     if (movie && awardType === 'MOVIE') {
@@ -189,21 +207,22 @@ export default function NomineeSearch({
   const resetChoice = () => {
     skipChoice(awardId.toString());
     setNomineeResult(undefined);
-    setMovie(undefined);
-    setPerson(undefined);
-    setAdditionalResults([]);
+    resetAutoComplete();
   };
 
   const getTitle = () => {
     if (!nomineeResult) {
       return messages.search.favorite;
     }
-    return awardType === 'MOVIE' ? nomineeResult.movieTitle : nomineeResult.personName;
+    return awardType === 'MOVIE' ? nomineeResult.frenchMovieTitle : nomineeResult.personName;
   };
 
   const hasSubheader: boolean = !!(nomineeResult && ((nomineeResult.movieTitle !== nomineeResult.frenchMovieTitle)
     || (awardType === 'CREW')
     || (awardType === 'CAST')));
+
+  const displayList: boolean = ((searchType === 'MOVIES' && !movie) || (searchType === 'PERSONS' && !person));
+  const choiceMade: boolean = !!((searchType === 'MOVIES' && movie) || (searchType === 'PERSONS' && person));
 
   return (
     <div className='nominee search'>
@@ -213,7 +232,7 @@ export default function NomineeSearch({
           subheader={
             hasSubheader
               ? (
-                <div className="nominee-alt-title">({nomineeResult!.frenchMovieTitle})</div>
+                <div className="nominee-alt-title">({nomineeResult!.movieTitle})</div>
               )
               : (
                 <></>
@@ -228,6 +247,7 @@ export default function NomineeSearch({
                   value={searchType}
                   exclusive
                   onChange={handleChange}
+                  disabled={choiceMade}
                 >
                   <ToggleButton value="MOVIES" aria-label="MOVIES" className="winner">
                     <Typography variant="subtitle2" component="h5">
@@ -240,45 +260,33 @@ export default function NomineeSearch({
                     </Typography>
                   </ToggleButton>
                 </ToggleButtonGroup>}
-                <Autocomplete
-                  id="search"
-                  open={open}
-                  onOpen={() => {
-                    setOpen(true);
-                  }}
-                  onClose={() => {
-                    setOpen(false);
-                  }}
-                  getOptionKey={(x: SearchResult) => x.id}
-                  filterOptions={(x: SearchResult[]) => x}
-                  onInputChange={debounce(
-                    (_: SyntheticEvent<Element, Event>, value: string) => {
-                      search(value);
-                    },
-                    1000,
-                  )}
-                  onChange={onAutocompleteChoice}
-                  isOptionEqualToValue={(option: SearchResult, value: SearchResult) => option.id === value.id}
-                  getOptionLabel={(option: SearchResult) => option.name}
-                  options={options}
-                  loading={loader.isLoading}
-                  noOptionsText={messages.search.no_options}
-                  renderInput={(params: AutocompleteRenderInputParams) => (
+                <div>
+                  <div>
                     <TextField
-                      {...params}
-                      InputProps={{
-                        ...params.InputProps,
-                        placeholder: messages.action.search,
-                        endAdornment: (
-                          <React.Fragment>
-                            {loader.isLoading ? <CircularProgress color="inherit" size={20}/> : null}
-                            {params.InputProps.endAdornment}
-                          </React.Fragment>
-                        ),
-                      }}
+                      label={messages.action.search}
+                      variant='filled'
+                      value={searchString}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchString(e.target.value)}
                     />
-                  )}
-                />
+                  </div>
+                  {displayList
+                    && <List>
+                      {options.length > 0 && options.map((option: SearchResult) => (
+                        <ListItem
+                          key={`${option.id}|${option.name}`}
+                          onClick={() => {
+                            setSearchString(option.name);
+                            onAutocompleteChoice(option);
+                          }}
+                        >{option.name}</ListItem>
+                      ))}
+                      {(options.length === 0) && (searchString
+                        ? <ListItem>{messages.search.no_options}</ListItem>
+                        : <></>
+                      )}
+                    </List>
+                  }
+                </div>
                 {(additionalResults && additionalResults.length > 0)
                   && <>
                     <List>
@@ -306,7 +314,7 @@ export default function NomineeSearch({
             }
             {
               nomineeResult && (
-                <div>
+                <>
                   <div className="nominee-images">
                     <CardMedia
                       component="img"
@@ -340,7 +348,7 @@ export default function NomineeSearch({
                       </ActionButton>
                     </ActionsContainer>
                   </CardActions>
-                </div>
+                </>
               )
             }
           </CardContent>

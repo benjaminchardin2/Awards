@@ -120,7 +120,10 @@ export default function Ceremony() {
               skipChoice={skipChoice}
             />
             <div className="sticky-button">
-              <Fab size="medium" onClick={getShareLink} disabled={Object.values(favoritePicks).length === 0 && Object.values(winnerPicks).length === 0}>
+              <Fab size="medium"
+                   onClick={getShareLink}
+                   disabled={Object.values(favoritePicks).length === 0 && Object.values(winnerPicks).length === 0}
+              >
                 <ShareIcon/>
               </Fab>
             </div>

@@ -4,6 +4,8 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import StarIcon from '@mui/icons-material/Star';
 import Button from '@mui/material/Button/Button';
 import { AwardWithNominees, NomineeType, PronosticChoice } from '../../../../../api/ceremony/CeremonyApi';
 import Nominee from '../../Nominee';
@@ -21,8 +23,8 @@ type AwardBigScreenType = {
     nomineeId?: number,
     nominee?: NomineeType
   ) => void,
-  pickTitle: (awardId: number) => string | undefined,
-  pickSubTitle: (awardId: number) => string | undefined,
+  pickTitle: (awardId: number, type?: 'WINNER' | 'FAVORITE') => string | undefined,
+  pickSubTitle: (awardId: number, type?: 'WINNER' | 'FAVORITE') => string | undefined,
   skipChoice: (awardId: string) => void,
 };
 export default function AwardsBigScreen({
@@ -65,18 +67,38 @@ export default function AwardsBigScreen({
                     <GradientIcon/>
                     <Typography variant="h2" component="h2">{award.awardName} </Typography>
                   </div>
+                  <div className="award-picks-preview">
                   {winnerPicks[award.awardId] && <div className="award-pick-preview">
-                    <Typography variant="h4" component="h4" className="title">{pickTitle(award.awardId)}</Typography>
+                    <StarIcon/>
+                    <Typography variant="h6" component="h6" className="title">
+                      {pickTitle(award.awardId, 'WINNER')}
+                    </Typography>
                     {award.type !== 'MOVIE'
                       && <Typography
-                        variant="h4"
-                        component="h4"
+                        variant="h6"
+                        component="h6"
                         className="subtitle"
                       >
-                        {`- ${pickSubTitle(award.awardId)}`}
+                        {`- ${pickSubTitle(award.awardId, 'WINNER')}`}
                       </Typography>
                     }
                   </div>}
+                  {favoritePicks[award.awardId] && <div className="award-pick-preview">
+                    <FavoriteIcon/>
+                    <Typography variant="h6" component="h6" className="title">
+                      {pickTitle(award.awardId, 'FAVORITE')}
+                    </Typography>
+                    {award.type !== 'MOVIE'
+                      && <Typography
+                        variant="h6"
+                        component="h6"
+                        className="subtitle"
+                      >
+                        {`- ${pickSubTitle(award.awardId, 'FAVORITE')}`}
+                      </Typography>
+                    }
+                  </div>}
+                  </div>
                 </AccordionSummary>
                 <AccordionDetails>
                   <div className="nominee-row">

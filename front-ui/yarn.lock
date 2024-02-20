@@ -1443,6 +1443,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@material-ui/types@npm:^4.0.0":
+  version: 4.1.1
+  resolution: "@material-ui/types@npm:4.1.1"
+  dependencies:
+    "@types/react": "*"
+  checksum: 987a4ae1848b25ca14d644fa59d4c5ba46b5f1900318930b48bcc63b92b12757cc4413c8e50d3e7660c39b2f44653ce831f818cb648bac3836f14b7de8193e3e
+  languageName: node
+  linkType: hard
+
 "@mdn/browser-compat-data@npm:^4.1.8":
   version: 4.2.1
   resolution: "@mdn/browser-compat-data@npm:4.2.1"
@@ -2062,7 +2071,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-swipeable-views@npm:^0.13.5":
+"@types/react-swipeable-views-core@npm:^0.13.3":
+  version: 0.13.3
+  resolution: "@types/react-swipeable-views-core@npm:0.13.3"
+  dependencies:
+    "@types/react-swipeable-views": "*"
+  checksum: c4fa180ea1e22c002c374526b7ffc61085eefcf3eb530e33d7fce9e47fcd15d0bdf4b6d3ce3b539c358a1bee67e4502a6ef416ef9981d62dc5fa3bf1111d5d76
+  languageName: node
+  linkType: hard
+
+"@types/react-swipeable-views-utils@npm:^0.13.7":
+  version: 0.13.7
+  resolution: "@types/react-swipeable-views-utils@npm:0.13.7"
+  dependencies:
+    "@material-ui/types": ^4.0.0
+    "@types/react": "*"
+    "@types/react-swipeable-views": "*"
+  checksum: 2b49b7d8d0ac397a63cb69ece99316afa49b72ee5104627c64419097f0d09e649e9cb8a47fa9b977267c6f66528d6d6870a4a23a5d8889c1a8d88327f0bb06e7
+  languageName: node
+  linkType: hard
+
+"@types/react-swipeable-views@npm:*, @types/react-swipeable-views@npm:^0.13.5":
   version: 0.13.5
   resolution: "@types/react-swipeable-views@npm:0.13.5"
   dependencies:
@@ -2774,6 +2803,8 @@ __metadata:
     "@types/react-router": ^5.1.19
     "@types/react-router-dom": ^5.3.3
     "@types/react-swipeable-views": ^0.13.5
+    "@types/react-swipeable-views-core": ^0.13.3
+    "@types/react-swipeable-views-utils": ^0.13.7
     "@types/validator": ^13.7.7
     "@types/yup": ^0.32.0
     "@typescript-eslint/eslint-plugin": ^5.47.0
@@ -2812,6 +2843,8 @@ __metadata:
     react-router: ^6.4.2
     react-router-dom: ^6.4.2
     react-swipeable-views: ^0.14.0
+    react-swipeable-views-core: ^0.14.0
+    react-swipeable-views-utils: ^0.14.0
     react-toastify: ^9.0.8
     sass: ^1.69.2
     simple-http-request-builder: ^2.0.0

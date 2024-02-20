@@ -177,7 +177,7 @@ const frMessages: Translations = {
     favorite: 'Rechercher votre coup de coeur',
     movies: 'Films',
     persons: 'Personnes',
-    no_options: 'Aucun résultat'
+    no_options: 'Aucun résultat',
   },
 } as const;
 

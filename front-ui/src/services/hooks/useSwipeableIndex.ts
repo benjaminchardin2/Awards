@@ -6,23 +6,15 @@ export type SwipeableIndex = {
   onPrevious: () => void,
   onNext: () => void,
 };
-const useSwipeableIndex = (array: unknown[], size?: number) : SwipeableIndex => {
+const useSwipeableIndex = () : SwipeableIndex => {
   const [index, setIndex] = useState<number>(0);
 
   const onPrevious = () => {
-    if ((index - 1) >= 0) {
-      setIndex(index - 1);
-    } else {
-      setIndex((size || array.length) - 1);
-    }
+    setIndex(index - 1);
   };
 
   const onNext = () => {
-    if ((index + 1) < (size || array.length)) {
-      setIndex(index + 1);
-    } else {
-      setIndex(0);
-    }
+    setIndex(index + 1);
   };
 
   return {

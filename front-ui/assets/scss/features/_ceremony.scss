@@ -77,20 +77,31 @@
           }
         }
 
-        .award-pick-preview {
-          margin-right: $spacer-8;
+        .award-picks-preview {
           display: flex;
-          align-items: center;
+          flex-direction: column;
+          margin-right: $spacer-3;
+          gap: $spacer-6;
 
-          .MuiTypography-root {
-            &.title {
-              font-weight: bold;
-              text-decoration: underline;
-            }
-            &.subtitle {
-              font-weight: normal;
-              text-decoration: none;
-              margin-left: $spacer-4;
+          .MuiSvgIcon-root {
+            margin-right: $spacer-1;
+          }
+
+          .award-pick-preview {
+            display: flex;
+            align-items: center;
+
+            .MuiTypography-root {
+              &.title {
+                font-weight: bold;
+                text-decoration: underline;
+              }
+
+              &.subtitle {
+                font-weight: normal;
+                text-decoration: none;
+                margin-left: $spacer-2;
+              }
             }
           }
         }
@@ -275,14 +286,9 @@
         align-items: center;
         flex-direction: column;
         min-height: 300px;
-        .MuiAutocomplete-root {
-          width: 100%;
-          .MuiInputBase-root {
-            font-size: $min-no-zoom-font-size;
-          }
-          .MuiSvgIcon-root {
-            font-size: 20px;
-          }
+
+        .MuiInputBase-root {
+          font-size: $min-no-zoom-font-size;
         }
       }
     }
@@ -395,6 +401,8 @@
           .MuiCard-root {
             .MuiCardContent-root {
               .nominee-images {
+                width: 100%;
+                display: flex;
                 .secondary-image {
                   max-width: 60px;
                 }

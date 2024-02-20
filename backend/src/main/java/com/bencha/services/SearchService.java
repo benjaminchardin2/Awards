@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Singleton
 public class SearchService {
@@ -93,9 +94,33 @@ public class SearchService {
                 awdc -> AwardConditionEnum.findByConditionName(awdc.getConditionName()).orElse(null)
             ));
         List<PersonCredit> personCredits = this.tmdbPeopleService.getPersonCredits(personId, AwardsType.valueOf(award.getType()));
-        List<SearchResult> searchResults = personCredits
+        Map<Integer, List<PersonCredit>> mediaGrouped = personCredits
             .stream()
+            .collect(Collectors.groupingBy(PersonCredit::getMediaId));
+
+        List<PersonCredit> deduped = mediaGrouped.values()
+            .stream().map(pcList ->
+                sortPersonCredits(pcList, awardConditionEnumMap)
+                    .findFirst()
+                    .get()
+            ).toList();
+
+        List<SearchResult> searchResults = sortPersonCredits(deduped, awardConditionEnumMap)
             .skip((long) pageSize * page)
+            .limit(pageSize)
+            .map(pc -> SearchResult.of(pc.getMediaId(), pc.getMovieOriginalTitle()))
+            .toList();
+        Boolean hasMore = (((page + 1) * pageSize) <= personCredits.size());
+        return AdditionalResults.of(
+            searchResults,
+            hasMore,
+            page + 1
+        );
+    }
+
+    private Stream<PersonCredit> sortPersonCredits(List<PersonCredit> personCredits, Map<AwardCondition,AwardConditionEnum> awardConditionEnumMap) {
+        return personCredits
+            .stream()
             .sorted((a, b) -> {
                 int compare = Math.toIntExact(awardConditionEnumMap.entrySet().stream()
                     .filter(entry -> entry.getValue().getPersonCreditMatcher().apply(b, entry.getKey().getValue()))
@@ -112,16 +137,7 @@ public class SearchService {
                     return LocalDate.parse(b.getReleaseDate(), DateTimeFormatter.ISO_DATE).compareTo(LocalDate.parse(a.getReleaseDate(), DateTimeFormatter.ISO_DATE));
                 }
                 return 1;
-            })
-            .limit(pageSize)
-            .map(pc -> SearchResult.of(pc.getMediaId(), pc.getMovieOriginalTitle()))
-            .toList();
-        Boolean hasMore = (((page + 1) * pageSize) <= personCredits.size());
-        return AdditionalResults.of(
-            searchResults,
-            hasMore,
-            page + 1
-        );
+            });
     }
 
     public AdditionalResults searchMoviePersons(Long awardId, Long movieId, int page) {
