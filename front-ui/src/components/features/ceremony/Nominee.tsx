@@ -30,11 +30,11 @@ export default function Nominee({
     <div className={`nominee ${isSelected ? 'selected' : ''}`}>
       <Card>
         <CardHeader
-          title={awardType === 'MOVIE' ? nominee.movieTitle : nominee.personName}
+          title={awardType === 'MOVIE' ? nominee.frenchMovieTitle : nominee.personName}
           subheader={
             hasSubheader
               ? (
-                <div className="nominee-alt-title">({nominee.frenchMovieTitle})</div>
+                <div className="nominee-alt-title">({nominee.movieTitle})</div>
               )
               : (
                 <></>
