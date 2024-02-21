@@ -202,7 +202,7 @@ export default function NomineeSearch({
           setAdditionalResults([]);
         });
     }
-  }, [movie, person, awardType]);
+  }, [movie, person]);
 
   const resetChoice = () => {
     skipChoice(awardId.toString());
